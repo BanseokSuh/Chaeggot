@@ -1,15 +1,14 @@
-package com.banny.springboota;
+package com.banny.bannysns;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 
 @SpringBootApplication(exclude = { SecurityAutoConfiguration.class })
-public class SpringbootaApplication {
+public class BannysnsApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(SpringbootaApplication.class, args);
+		SpringApplication.run(BannysnsApplication.class, args);
 	}
 
 }

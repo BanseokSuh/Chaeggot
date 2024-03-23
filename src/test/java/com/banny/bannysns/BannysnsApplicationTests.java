@@ -1,10 +1,10 @@
-package com.banny.springboota;
+package com.banny.bannysns;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class SpringbootaApplicationTests {
+class BannysnsApplicationTests {
 
 	@Test
 	void contextLoads() {

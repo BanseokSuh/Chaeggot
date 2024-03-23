@@ -1,4 +1,4 @@
-package com.banny.springboota.exception;
+package com.banny.bannysns.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

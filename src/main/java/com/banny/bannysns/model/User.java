@@ -1,6 +1,6 @@
-package com.banny.springboota.model;
+package com.banny.bannysns.model;
 
-import com.banny.springboota.model.entity.UserEntity;
+import com.banny.bannysns.model.entity.UserEntity;
 import lombok.Builder;
 import lombok.Data;
 

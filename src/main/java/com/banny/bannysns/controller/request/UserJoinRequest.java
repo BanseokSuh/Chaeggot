@@ -1,4 +1,4 @@
-package com.banny.springboota.controller.request;
+package com.banny.bannysns.controller.request;
 
 import lombok.Getter;
 

@@ -1,6 +1,6 @@
-package com.banny.springboota.model.entity;
+package com.banny.bannysns.model.entity;
 
-import com.banny.springboota.model.UserRole;
+import com.banny.bannysns.model.UserRole;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

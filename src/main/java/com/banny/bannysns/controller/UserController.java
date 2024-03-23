@@ -1,10 +1,10 @@
-package com.banny.springboota.controller;
+package com.banny.bannysns.controller;
 
-import com.banny.springboota.controller.request.UserJoinRequest;
-import com.banny.springboota.controller.response.Response;
-import com.banny.springboota.controller.response.UserJoinResponse;
-import com.banny.springboota.model.User;
-import com.banny.springboota.service.UserService;
+import com.banny.bannysns.controller.request.UserJoinRequest;
+import com.banny.bannysns.controller.response.Response;
+import com.banny.bannysns.controller.response.UserJoinResponse;
+import com.banny.bannysns.model.User;
+import com.banny.bannysns.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

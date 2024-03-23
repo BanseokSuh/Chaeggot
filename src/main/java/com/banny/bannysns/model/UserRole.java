@@ -1,4 +1,4 @@
-package com.banny.springboota.model;
+package com.banny.bannysns.model;
 
 public enum UserRole {
 

@@ -1,7 +1,7 @@
-package com.banny.springboota.controller.response;
+package com.banny.bannysns.controller.response;
 
-import com.banny.springboota.model.User;
-import com.banny.springboota.model.UserRole;
+import com.banny.bannysns.model.User;
+import com.banny.bannysns.model.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

@@ -1,6 +1,6 @@
-package com.banny.springboota.repository;
+package com.banny.bannysns.repository;
 
-import com.banny.springboota.model.entity.UserEntity;
+import com.banny.bannysns.model.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

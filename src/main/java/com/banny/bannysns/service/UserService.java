@@ -1,10 +1,10 @@
-package com.banny.springboota.service;
+package com.banny.bannysns.service;
 
-import com.banny.springboota.exception.ApplicationException;
-import com.banny.springboota.exception.ErrorCode;
-import com.banny.springboota.model.User;
-import com.banny.springboota.model.entity.UserEntity;
-import com.banny.springboota.repository.UserEntityRepository;
+import com.banny.bannysns.exception.ApplicationException;
+import com.banny.bannysns.exception.ErrorCode;
+import com.banny.bannysns.model.User;
+import com.banny.bannysns.model.entity.UserEntity;
+import com.banny.bannysns.repository.UserEntityRepository;
 import io.micrometer.common.util.StringUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

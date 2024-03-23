@@ -1,4 +1,4 @@
-package com.banny.springboota.configuration;
+package com.banny.bannysns.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

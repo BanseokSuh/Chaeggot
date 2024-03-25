@@ -42,29 +42,29 @@ public class UserService {
 
     private void validateUserInfo(String userId, String userName, String password) {
         if (StringUtils.isBlank(userId)) {
-            throw new ApplicationException(ErrorCode.INVALID_USER_ID, "User ID should not be blank");
+            throw new ApplicationException(ErrorCode.EMPTY_USER_ID, "User ID should not be empty");
         }
 
         if (userId.length() < 5) {
-            throw new ApplicationException(ErrorCode.INVALID_USER_ID, "User ID should be over 5 letters");
+            throw new ApplicationException(ErrorCode.INVALID_USER_ID_LENGTH, "User ID is too short");
         }
 
         if (StringUtils.isBlank(userName)) {
-            throw new ApplicationException(ErrorCode.INVALID_USER_NAME, "User name should not be blank");
+            throw new ApplicationException(ErrorCode.EMPTY_USER_NAME, "User name should not be empty");
         }
 
         if (StringUtils.isBlank(password)) {
-            throw new ApplicationException(ErrorCode.INVALID_PASSWORD, "Password should not be blank");
+            throw new ApplicationException(ErrorCode.EMPTY_PASSWORD, "Password should not be empty");
         }
 
         if (password.length() < 5) {
-            throw new ApplicationException(ErrorCode.INVALID_PASSWORD, "Password should be over 5 letters");
+            throw new ApplicationException(ErrorCode.INVALID_PASSWORD_LENGTH, "Password is too short");
         }
 
         Pattern pattern = Pattern.compile("[^a-z0-9 ]", Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(password);
         if (!matcher.find()) {
-            throw new ApplicationException(ErrorCode.INVALID_PASSWORD, "Password should include at least 1 special symbol");
+            throw new ApplicationException(ErrorCode.PASSWORD_NOT_MATCHED, "Password should include at least 1 special symbol");
         }
     }
 }

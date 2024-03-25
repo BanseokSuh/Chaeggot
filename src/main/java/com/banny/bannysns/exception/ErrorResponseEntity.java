@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 public class ErrorResponseEntity {
     private int status;
     private String name;
-    private String code;
+    private Integer code;
     private String message;
 
     public static ResponseEntity<ErrorResponseEntity> toResponseEntity(ErrorCode e){

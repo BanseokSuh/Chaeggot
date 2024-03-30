@@ -19,6 +19,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -47,16 +48,17 @@ class UserControllerTest {
         when(mock(UserService.class).join(userId, userName, password)).thenReturn(mock(User.class));
 
         mockMvc.perform(post("/api/v1/user/join")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsBytes(new UserJoinRequest(userId, userName, password)))
-        ).andDo(print()).andExpect(status().isOk());
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsBytes(new UserJoinRequest(userId, userName, password))))
+                .andExpect(status().isOk())
+                .andDo(print());
     }
 
     @Test
     @DisplayName("회원가입 시 userId를 입력하지 않으면 에러를 반환한다")
     public void joinWithoutUserId() throws Exception {
         // given
-        String userId = "";
+        String userId = ""; // Empty userId
         String userName = "서반석";
         String password = "testUser!";
 
@@ -64,16 +66,19 @@ class UserControllerTest {
         when(mock(UserService.class).join(userId, userName, password)).thenThrow(new ApplicationException(ErrorCode.EMPTY_USER_ID));
 
         mockMvc.perform(post("/api/v1/user/join")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsBytes(new UserJoinRequest(userId, userName, password)))
-        ).andDo(print()).andExpect(status().isBadRequest());
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsBytes(new UserJoinRequest(userId, userName, password))))
+                .andExpect(jsonPath("$.code").value(ErrorCode.EMPTY_USER_ID.getCode()))
+                .andExpect(jsonPath("$.message").value(ErrorCode.EMPTY_USER_ID.getMessage()))
+                .andExpect(status().isBadRequest())
+                .andDo(print());
     }
 
     @Test
     @DisplayName("회원가입 시 userId가 5자리 미만인 경우 에러를 반환한다")
     public void joinWithUserIdWithNotEnoughLength() throws Exception {
         // given
-        String userId = "test"; // 4 letters
+        String userId = "test"; // 4 letters of userId
         String userName = "서반석";
         String password = "testUser!";
 
@@ -81,12 +86,33 @@ class UserControllerTest {
         when(mock(UserService.class).join(userId, userName, password)).thenThrow(new ApplicationException(ErrorCode.INVALID_USER_ID_LENGTH));
 
         mockMvc.perform(post("/api/v1/user/join")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsBytes(new UserJoinRequest(userId, userName, password)))
-        ).andDo(print()).andExpect(status().isBadRequest());
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsBytes(new UserJoinRequest(userId, userName, password))))
+                .andExpect(jsonPath("$.code").value(ErrorCode.INVALID_USER_ID_LENGTH.getCode()))
+                .andExpect(jsonPath("$.message").value(ErrorCode.INVALID_USER_ID_LENGTH.getMessage()))
+                .andExpect(status().isBadRequest())
+                .andDo(print());
     }
 
-    // 회원가입 시 이미 회원가입된 userId로 회원가입을 하는 경우 에러를 반환한다
+    @Test
+    @DisplayName("회원가입 시 이미 회원가입된 userId로 회원가입을 하는 경우 에러를 반환한다")
+    public void joinWithDuplicatedUserId() throws Exception {
+        // given
+        String userId = "testUser002"; // Duplicated userId
+        String userName = "서반석";
+        String password = "testUser!";
+
+        // mocking
+        when(mock(UserService.class).join(userId, userName, password)).thenThrow(new ApplicationException(ErrorCode.DUPLICATED_USER_ID));
+
+        mockMvc.perform(post("/api/v1/user/join")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsBytes(new UserJoinRequest(userId, userName, password))))
+                .andExpect(jsonPath("$.code").value(ErrorCode.DUPLICATED_USER_ID.getCode()))
+                .andExpect(jsonPath("$.message").value(ErrorCode.DUPLICATED_USER_ID.getMessage()))
+                .andExpect(status().isConflict())
+                .andDo(print());
+    }
 
     // 회원가입 시 userName을 입력하지 않으면 에러를 반환한다
     // 회원가입 시 비밀번호를 입력하지 않으면 에러를 반환한다

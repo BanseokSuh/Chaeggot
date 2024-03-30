@@ -69,7 +69,23 @@ class UserControllerTest {
         ).andDo(print()).andExpect(status().isBadRequest());
     }
 
-    // 회원가입 시 userId가 5자리 미만인 경우 에러를 반환한다
+    @Test
+    @DisplayName("회원가입 시 userId가 5자리 미만인 경우 에러를 반환한다")
+    public void joinWithUserIdWithNotEnoughLength() throws Exception {
+        // given
+        String userId = "test"; // 4 letters
+        String userName = "서반석";
+        String password = "testUser!";
+
+        // mocking
+        when(mock(UserService.class).join(userId, userName, password)).thenThrow(new ApplicationException(ErrorCode.INVALID_USER_ID_LENGTH));
+
+        mockMvc.perform(post("/api/v1/user/join")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsBytes(new UserJoinRequest(userId, userName, password)))
+        ).andDo(print()).andExpect(status().isBadRequest());
+    }
+
     // 회원가입 시 이미 회원가입된 userId로 회원가입을 하는 경우 에러를 반환한다
 
     // 회원가입 시 userName을 입력하지 않으면 에러를 반환한다

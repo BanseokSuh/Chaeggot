@@ -15,8 +15,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -40,7 +39,7 @@ class UserControllerTest {
     @Transactional
     public void join() throws Exception {
         // given
-        String userId = "testUser004";
+        String userId = "testUser000";
         String userName = "서반석";
         String password = "testUser!";
 
@@ -115,6 +114,27 @@ class UserControllerTest {
     }
 
     // 회원가입 시 userName을 입력하지 않으면 에러를 반환한다
+    @Test
+    @DisplayName("회원가입 시 userName을 입력하지 않으면 에러를 반환한다")
+    public void joinWithoutUserName() throws Exception {
+        // given
+        String userId = "testUser000";
+        String userName = ""; // Empty userName
+        String password = "testUser!";
+
+        // mocking
+        when(mock(UserService.class).join(userId, userName, password)).thenThrow(new ApplicationException(ErrorCode.EMPTY_USER_NAME));
+
+        // expected
+        mockMvc.perform(post("/api/v1/user/join")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsBytes(new UserJoinRequest(userId, userName, password))))
+                .andExpect(jsonPath("$.code").value(ErrorCode.EMPTY_USER_NAME.getCode()))
+                .andExpect(jsonPath("$.message").value(ErrorCode.EMPTY_USER_NAME.getMessage()))
+                .andExpect(status().isBadRequest())
+                .andDo(print());
+    }
+
     // 회원가입 시 비밀번호를 입력하지 않으면 에러를 반환한다
 
     // 회원가입 시 비밀번호가 5자리 미만인 경우 에러를 반환한다

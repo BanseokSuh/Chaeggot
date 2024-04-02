@@ -185,14 +185,14 @@ class UserControllerTest {
         String password = "testUser"; // No special character in password
 
         // mocking
-        when(mock(UserService.class).join(userId, userName, password)).thenThrow(new ApplicationException(ErrorCode.PASSWORD_NOT_NOT_INCLUDE_SPECIAL_SYMBOL));
+        when(mock(UserService.class).join(userId, userName, password)).thenThrow(new ApplicationException(ErrorCode.PASSWORD_NOT_INCLUDE_SPECIAL_SYMBOL));
 
         // expected
         mockMvc.perform(post("/api/v1/user/join")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsBytes(new UserJoinRequest(userId, userName, password))))
-                .andExpect(jsonPath("$.code").value(ErrorCode.PASSWORD_NOT_NOT_INCLUDE_SPECIAL_SYMBOL.getCode()))
-                .andExpect(jsonPath("$.message").value(ErrorCode.PASSWORD_NOT_NOT_INCLUDE_SPECIAL_SYMBOL.getMessage()))
+                .andExpect(jsonPath("$.code").value(ErrorCode.PASSWORD_NOT_INCLUDE_SPECIAL_SYMBOL.getCode()))
+                .andExpect(jsonPath("$.message").value(ErrorCode.PASSWORD_NOT_INCLUDE_SPECIAL_SYMBOL.getMessage()))
                 .andExpect(status().isBadRequest())
                 .andDo(print());
     }

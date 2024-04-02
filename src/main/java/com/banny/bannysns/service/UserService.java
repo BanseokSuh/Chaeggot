@@ -64,7 +64,7 @@ public class UserService {
         Pattern pattern = Pattern.compile("[^a-z0-9 ]", Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(password);
         if (!matcher.find()) {
-            throw new ApplicationException(ErrorCode.PASSWORD_NOT_NOT_INCLUDE_SPECIAL_SYMBOL, "Password should include at least 1 special symbol");
+            throw new ApplicationException(ErrorCode.PASSWORD_NOT_INCLUDE_SPECIAL_SYMBOL, "Password should include at least 1 special symbol");
         }
     }
 }

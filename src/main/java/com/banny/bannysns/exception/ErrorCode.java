@@ -14,7 +14,7 @@ public enum ErrorCode {
     EMPTY_USER_NAME(HttpStatus.BAD_REQUEST, 4003, "User name is empty"),
     EMPTY_PASSWORD(HttpStatus.BAD_REQUEST, 4004, "Password is blank"),
     INVALID_PASSWORD_LENGTH(HttpStatus.BAD_REQUEST, 4005, "Password is too short"),
-    PASSWORD_NOT_MATCHED(HttpStatus.BAD_REQUEST, 4006, "Password is not matched"),
+    PASSWORD_NOT_NOT_INCLUDE_SPECIAL_SYMBOL(HttpStatus.BAD_REQUEST, 4006, "Password should include special symbol"),
     ;
 
     private HttpStatus httpStatus;

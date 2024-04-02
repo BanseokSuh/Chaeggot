@@ -113,7 +113,6 @@ class UserControllerTest {
                 .andDo(print());
     }
 
-    // 회원가입 시 userName을 입력하지 않으면 에러를 반환한다
     @Test
     @DisplayName("회원가입 시 userName을 입력하지 않으면 에러를 반환한다")
     public void joinWithoutUserName() throws Exception {
@@ -135,10 +134,67 @@ class UserControllerTest {
                 .andDo(print());
     }
 
-    // 회원가입 시 비밀번호를 입력하지 않으면 에러를 반환한다
+    @Test
+    @DisplayName("회원가입 시 비밀번호를 입력하지 않으면 에러를 반환한다")
+    void joinWithoutPassword() throws Exception {
+        // given
+        String userId = "testUser000";
+        String userName = "서반석";
+        String password = ""; // Empty password
 
-    // 회원가입 시 비밀번호가 5자리 미만인 경우 에러를 반환한다
-    // 회원가입 시 비밀번호에 특수문자가 없는 경우 에러를 반환한다
+        // mocking
+        when(mock(UserService.class).join(userId, userName, password)).thenThrow(new ApplicationException(ErrorCode.EMPTY_PASSWORD));
 
+        // expected
+        mockMvc.perform(post("/api/v1/user/join")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsBytes(new UserJoinRequest(userId, userName, password))))
+                .andExpect(jsonPath("$.code").value(ErrorCode.EMPTY_PASSWORD.getCode()))
+                .andExpect(jsonPath("$.message").value(ErrorCode.EMPTY_PASSWORD.getMessage()))
+                .andExpect(status().isBadRequest())
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("회원가입 시 비밀번호가 5자리 미만인 경우 에러를 반환한다")
+    void joinWithPasswordWithNotEnoughLength() throws Exception {
+        // given
+        String userId = "testUser000";
+        String userName = "서반석";
+        String password = "test"; // 4 letters of password
+
+        // mocking
+        when(mock(UserService.class).join(userId, userName, password)).thenThrow(new ApplicationException(ErrorCode.INVALID_PASSWORD_LENGTH));
+
+        // expected
+        mockMvc.perform(post("/api/v1/user/join")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsBytes(new UserJoinRequest(userId, userName, password))))
+                .andExpect(jsonPath("$.code").value(ErrorCode.INVALID_PASSWORD_LENGTH.getCode()))
+                .andExpect(jsonPath("$.message").value(ErrorCode.INVALID_PASSWORD_LENGTH.getMessage()))
+                .andExpect(status().isBadRequest())
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("회원가입 시 비밀번호에 특수문자가 없는 경우 에러를 반환한다")
+    void joinWithPasswordWithoutSpecialSymbol() throws Exception {
+        // given
+        String userId = "testUser000";
+        String userName = "서반석";
+        String password = "testUser"; // No special character in password
+
+        // mocking
+        when(mock(UserService.class).join(userId, userName, password)).thenThrow(new ApplicationException(ErrorCode.PASSWORD_NOT_NOT_INCLUDE_SPECIAL_SYMBOL));
+
+        // expected
+        mockMvc.perform(post("/api/v1/user/join")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsBytes(new UserJoinRequest(userId, userName, password))))
+                .andExpect(jsonPath("$.code").value(ErrorCode.PASSWORD_NOT_NOT_INCLUDE_SPECIAL_SYMBOL.getCode()))
+                .andExpect(jsonPath("$.message").value(ErrorCode.PASSWORD_NOT_NOT_INCLUDE_SPECIAL_SYMBOL.getMessage()))
+                .andExpect(status().isBadRequest())
+                .andDo(print());
+    }
 
 }

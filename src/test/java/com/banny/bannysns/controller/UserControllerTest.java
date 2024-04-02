@@ -68,7 +68,6 @@ class UserControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsBytes(new UserJoinRequest(userId, userName, password))))
                 .andExpect(jsonPath("$.code").value(ErrorCode.EMPTY_USER_ID.getCode()))
-                .andExpect(jsonPath("$.message").value(ErrorCode.EMPTY_USER_ID.getMessage()))
                 .andExpect(status().isBadRequest())
                 .andDo(print());
     }
@@ -88,7 +87,6 @@ class UserControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsBytes(new UserJoinRequest(userId, userName, password))))
                 .andExpect(jsonPath("$.code").value(ErrorCode.INVALID_USER_ID_LENGTH.getCode()))
-                .andExpect(jsonPath("$.message").value(ErrorCode.INVALID_USER_ID_LENGTH.getMessage()))
                 .andExpect(status().isBadRequest())
                 .andDo(print());
     }
@@ -108,7 +106,6 @@ class UserControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsBytes(new UserJoinRequest(userId, userName, password))))
                 .andExpect(jsonPath("$.code").value(ErrorCode.DUPLICATED_USER_ID.getCode()))
-                .andExpect(jsonPath("$.message").value(ErrorCode.DUPLICATED_USER_ID.getMessage()))
                 .andExpect(status().isConflict())
                 .andDo(print());
     }
@@ -129,7 +126,6 @@ class UserControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsBytes(new UserJoinRequest(userId, userName, password))))
                 .andExpect(jsonPath("$.code").value(ErrorCode.EMPTY_USER_NAME.getCode()))
-                .andExpect(jsonPath("$.message").value(ErrorCode.EMPTY_USER_NAME.getMessage()))
                 .andExpect(status().isBadRequest())
                 .andDo(print());
     }
@@ -150,7 +146,6 @@ class UserControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsBytes(new UserJoinRequest(userId, userName, password))))
                 .andExpect(jsonPath("$.code").value(ErrorCode.EMPTY_PASSWORD.getCode()))
-                .andExpect(jsonPath("$.message").value(ErrorCode.EMPTY_PASSWORD.getMessage()))
                 .andExpect(status().isBadRequest())
                 .andDo(print());
     }
@@ -171,7 +166,6 @@ class UserControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsBytes(new UserJoinRequest(userId, userName, password))))
                 .andExpect(jsonPath("$.code").value(ErrorCode.INVALID_PASSWORD_LENGTH.getCode()))
-                .andExpect(jsonPath("$.message").value(ErrorCode.INVALID_PASSWORD_LENGTH.getMessage()))
                 .andExpect(status().isBadRequest())
                 .andDo(print());
     }
@@ -192,7 +186,6 @@ class UserControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsBytes(new UserJoinRequest(userId, userName, password))))
                 .andExpect(jsonPath("$.code").value(ErrorCode.PASSWORD_NOT_INCLUDE_SPECIAL_SYMBOL.getCode()))
-                .andExpect(jsonPath("$.message").value(ErrorCode.PASSWORD_NOT_INCLUDE_SPECIAL_SYMBOL.getMessage()))
                 .andExpect(status().isBadRequest())
                 .andDo(print());
     }

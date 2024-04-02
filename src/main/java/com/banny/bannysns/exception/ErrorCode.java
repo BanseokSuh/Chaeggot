@@ -8,16 +8,15 @@ import org.springframework.http.HttpStatus;
 @AllArgsConstructor
 public enum ErrorCode {
 
-    DUPLICATED_USER_ID(HttpStatus.CONFLICT, 4000, "User ID is duplicated"),
-    EMPTY_USER_ID(HttpStatus.BAD_REQUEST, 4001, "User ID is empty"),
-    INVALID_USER_ID_LENGTH(HttpStatus.BAD_REQUEST, 4002, "User ID is too short"),
-    EMPTY_USER_NAME(HttpStatus.BAD_REQUEST, 4003, "User name is empty"),
-    EMPTY_PASSWORD(HttpStatus.BAD_REQUEST, 4004, "Password is blank"),
-    INVALID_PASSWORD_LENGTH(HttpStatus.BAD_REQUEST, 4005, "Password is too short"),
-    PASSWORD_NOT_INCLUDE_SPECIAL_SYMBOL(HttpStatus.BAD_REQUEST, 4006, "Password should include special symbol"),
+    DUPLICATED_USER_ID(HttpStatus.CONFLICT, 4000), // "User ID is duplicated"
+    EMPTY_USER_ID(HttpStatus.BAD_REQUEST, 4001), // "User ID is empty"
+    INVALID_USER_ID_LENGTH(HttpStatus.BAD_REQUEST, 4002), // "User ID is too short"
+    EMPTY_USER_NAME(HttpStatus.BAD_REQUEST, 4003), // "Username is empty"
+    EMPTY_PASSWORD(HttpStatus.BAD_REQUEST, 4004), // "Password is blank"
+    INVALID_PASSWORD_LENGTH(HttpStatus.BAD_REQUEST, 4005), // "Password is too short"
+    PASSWORD_NOT_INCLUDE_SPECIAL_SYMBOL(HttpStatus.BAD_REQUEST, 4006), // "Password should include special symbol"
     ;
 
     private HttpStatus httpStatus;
     private Integer code;
-    private String message;
 }

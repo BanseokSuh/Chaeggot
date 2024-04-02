@@ -33,7 +33,7 @@ public class UserService {
         validateUserInfo(userId, userName, password);
 
         userEntityRepository.findByUserId(userId).ifPresent(it -> {
-            throw new ApplicationException(ErrorCode.DUPLICATED_USER_ID, String.format("%s is duplicated", userId));
+            throw new ApplicationException(ErrorCode.DUPLICATED_USER_ID, String.format("User ID %s is duplicated", userId));
         });
 
         UserEntity userEntity = userEntityRepository.save(UserEntity.of(userId, userName, encoder.encode(password)));
@@ -42,29 +42,29 @@ public class UserService {
 
     private void validateUserInfo(String userId, String userName, String password) {
         if (StringUtils.isBlank(userId)) {
-            throw new ApplicationException(ErrorCode.EMPTY_USER_ID, "User ID should not be empty");
+            throw new ApplicationException(ErrorCode.EMPTY_USER_ID, String.format("User ID %s should not be empty", userId));
         }
 
         if (userId.length() < 5) {
-            throw new ApplicationException(ErrorCode.INVALID_USER_ID_LENGTH, "User ID is too short");
+            throw new ApplicationException(ErrorCode.INVALID_USER_ID_LENGTH, String.format("User ID %s is too short", userId));
         }
 
         if (StringUtils.isBlank(userName)) {
-            throw new ApplicationException(ErrorCode.EMPTY_USER_NAME, "User name should not be empty");
+            throw new ApplicationException(ErrorCode.EMPTY_USER_NAME, String.format("Username %s should not be empty", userName));
         }
 
         if (StringUtils.isBlank(password)) {
-            throw new ApplicationException(ErrorCode.EMPTY_PASSWORD, "Password should not be empty");
+            throw new ApplicationException(ErrorCode.EMPTY_PASSWORD, String.format("Password %s should not be empty", password));
         }
 
         if (password.length() < 5) {
-            throw new ApplicationException(ErrorCode.INVALID_PASSWORD_LENGTH, "Password is too short");
+            throw new ApplicationException(ErrorCode.INVALID_PASSWORD_LENGTH, String.format("Password %s is too short", password));
         }
 
         Pattern pattern = Pattern.compile("[^a-z0-9 ]", Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(password);
         if (!matcher.find()) {
-            throw new ApplicationException(ErrorCode.PASSWORD_NOT_INCLUDE_SPECIAL_SYMBOL, "Password should include at least 1 special symbol");
+            throw new ApplicationException(ErrorCode.PASSWORD_NOT_INCLUDE_SPECIAL_SYMBOL, String.format("Password %s should include at least 1 special symbol", password));
         }
     }
 }

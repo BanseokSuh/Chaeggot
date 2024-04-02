@@ -12,6 +12,6 @@ public class GlobalControllerAdvice {
     @ExceptionHandler(ApplicationException.class)
     public ResponseEntity<ErrorResponseEntity> applicationExceptionHandler(ApplicationException e) {
         log.error("error occurs : {}", e.toString());
-        return ErrorResponseEntity.toResponseEntity(e.getErrorCode());
+        return ErrorResponseEntity.toResponseEntity(e.getErrorCode(), e.getMessage());
     }
 }

@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 @Getter
 @AllArgsConstructor
 public enum ErrorCode {
-
+    OK(HttpStatus.OK, 2000), // "OK"
     DUPLICATED_USER_ID(HttpStatus.CONFLICT, 4000), // "User ID is duplicated"
     EMPTY_USER_ID(HttpStatus.BAD_REQUEST, 4001), // "User ID is empty"
     INVALID_USER_ID_LENGTH(HttpStatus.BAD_REQUEST, 4002), // "User ID is too short"

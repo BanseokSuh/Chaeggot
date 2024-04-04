@@ -4,6 +4,7 @@ import com.banny.bannysns.controller.request.UserJoinRequest;
 import com.banny.bannysns.controller.request.UserLoginRequest;
 import com.banny.bannysns.controller.response.Response;
 import com.banny.bannysns.controller.response.UserJoinResponse;
+import com.banny.bannysns.controller.response.UserLoginResponse;
 import com.banny.bannysns.model.User;
 import com.banny.bannysns.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -26,8 +27,8 @@ public class UserController {
     }
 
     @PostMapping("login")
-    public Response<String> login(@RequestBody UserLoginRequest request) {
+    public Response<UserLoginResponse> login(@RequestBody UserLoginRequest request) {
         String token = userService.login(request.getUserId(), request.getPassword());
-        return Response.success(token);
+        return Response.success(UserLoginResponse.fromToken(token));
     }
 }

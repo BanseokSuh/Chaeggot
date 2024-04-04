@@ -13,8 +13,8 @@ public enum ErrorCode {
     INVALID_USER_ID_LENGTH(HttpStatus.BAD_REQUEST, 4002), // "User ID is too short"
     EMPTY_USER_NAME(HttpStatus.BAD_REQUEST, 4003), // "Username is empty"
     EMPTY_PASSWORD(HttpStatus.BAD_REQUEST, 4004), // "Password is blank"
-    INVALID_PASSWORD_LENGTH(HttpStatus.BAD_REQUEST, 4005), // "Password is too short"
-    PASSWORD_NOT_INCLUDE_SPECIAL_SYMBOL(HttpStatus.BAD_REQUEST, 4006), // "Password should include special symbol"
+    INVALID_PASSWORD(HttpStatus.BAD_REQUEST, 4005), // "Password is invalid"
+    USER_NOT_FOUND(HttpStatus.NOT_FOUND, 4006), // "User not found"
     ;
 
     private HttpStatus httpStatus;

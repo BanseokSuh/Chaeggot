@@ -5,8 +5,10 @@ import com.banny.bannysns.exception.ErrorCode;
 import com.banny.bannysns.model.User;
 import com.banny.bannysns.model.entity.UserEntity;
 import com.banny.bannysns.repository.UserEntityRepository;
+import com.banny.bannysns.util.JwtTokenUtils;
 import io.micrometer.common.util.StringUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +22,12 @@ public class UserService {
 
     private final UserEntityRepository userEntityRepository;
     private final BCryptPasswordEncoder encoder;
+
+    @Value("${jwt.secret-key}")
+    private String secretKey;
+
+    @Value("${jwt.token.expired-time-ms}")
+    private Long expiredTimeMs;
 
     /**
      * 회원가입
@@ -58,13 +66,30 @@ public class UserService {
         }
 
         if (password.length() < 5) {
-            throw new ApplicationException(ErrorCode.INVALID_PASSWORD_LENGTH, String.format("Password %s is too short", password));
+            throw new ApplicationException(ErrorCode.INVALID_PASSWORD, String.format("Password %s is invalid", password));
         }
 
         Pattern pattern = Pattern.compile("[^a-z0-9 ]", Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(password);
         if (!matcher.find()) {
-            throw new ApplicationException(ErrorCode.PASSWORD_NOT_INCLUDE_SPECIAL_SYMBOL, String.format("Password %s should include at least 1 special symbol", password));
+            throw new ApplicationException(ErrorCode.INVALID_PASSWORD, String.format("Password %s should include at least 1 special symbol", password));
         }
+    }
+
+    /**
+     * 로그인
+     * @param userId
+     * @param password
+     * @return token
+     */
+    public String login(String userId, String password) {
+        User user = userEntityRepository.findByUserId(userId).map(User::fromEntity).orElseThrow(
+                () -> new ApplicationException(ErrorCode.USER_NOT_FOUND, String.format("User ID %s not found", userId)));
+
+        if (!encoder.matches(password, user.getPassword())) {
+            throw new ApplicationException(ErrorCode.INVALID_PASSWORD, "Password is invalid");
+        }
+
+        return JwtTokenUtils.generateToken(userId, secretKey, expiredTimeMs);
     }
 }

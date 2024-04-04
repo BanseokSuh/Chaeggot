@@ -159,13 +159,13 @@ class UserControllerTest {
         String password = "test"; // 4 letters of password
 
         // mocking
-        when(mock(UserService.class).join(userId, userName, password)).thenThrow(new ApplicationException(ErrorCode.INVALID_PASSWORD_LENGTH));
+        when(mock(UserService.class).join(userId, userName, password)).thenThrow(new ApplicationException(ErrorCode.INVALID_PASSWORD));
 
         // expected
         mockMvc.perform(post("/api/v1/user/join")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsBytes(new UserJoinRequest(userId, userName, password))))
-                .andExpect(jsonPath("$.code").value(ErrorCode.INVALID_PASSWORD_LENGTH.getCode()))
+                .andExpect(jsonPath("$.code").value(ErrorCode.INVALID_PASSWORD.getCode()))
                 .andExpect(status().isBadRequest())
                 .andDo(print());
     }
@@ -179,13 +179,13 @@ class UserControllerTest {
         String password = "testUser"; // No special character in password
 
         // mocking
-        when(mock(UserService.class).join(userId, userName, password)).thenThrow(new ApplicationException(ErrorCode.PASSWORD_NOT_INCLUDE_SPECIAL_SYMBOL));
+        when(mock(UserService.class).join(userId, userName, password)).thenThrow(new ApplicationException(ErrorCode.INVALID_PASSWORD));
 
         // expected
         mockMvc.perform(post("/api/v1/user/join")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsBytes(new UserJoinRequest(userId, userName, password))))
-                .andExpect(jsonPath("$.code").value(ErrorCode.PASSWORD_NOT_INCLUDE_SPECIAL_SYMBOL.getCode()))
+                .andExpect(jsonPath("$.code").value(ErrorCode.INVALID_PASSWORD.getCode()))
                 .andExpect(status().isBadRequest())
                 .andDo(print());
     }

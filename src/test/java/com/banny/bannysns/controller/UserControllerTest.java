@@ -1,6 +1,7 @@
 package com.banny.bannysns.controller;
 
 import com.banny.bannysns.controller.request.UserJoinRequest;
+import com.banny.bannysns.controller.request.UserLoginRequest;
 import com.banny.bannysns.exception.ApplicationException;
 import com.banny.bannysns.exception.ErrorCode;
 import com.banny.bannysns.model.User;
@@ -46,6 +47,7 @@ class UserControllerTest {
         // mocking
         when(mock(UserService.class).join(userId, userName, password)).thenReturn(mock(User.class));
 
+        // expected
         mockMvc.perform(post("/api/v1/user/join")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsBytes(new UserJoinRequest(userId, userName, password))))
@@ -64,6 +66,7 @@ class UserControllerTest {
         // mocking
         when(mock(UserService.class).join(userId, userName, password)).thenThrow(new ApplicationException(ErrorCode.EMPTY_USER_ID));
 
+        // expected
         mockMvc.perform(post("/api/v1/user/join")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsBytes(new UserJoinRequest(userId, userName, password))))
@@ -83,6 +86,7 @@ class UserControllerTest {
         // mocking
         when(mock(UserService.class).join(userId, userName, password)).thenThrow(new ApplicationException(ErrorCode.INVALID_USER_ID_LENGTH));
 
+        // expected
         mockMvc.perform(post("/api/v1/user/join")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsBytes(new UserJoinRequest(userId, userName, password))))
@@ -189,5 +193,59 @@ class UserControllerTest {
                 .andExpect(status().isBadRequest())
                 .andDo(print());
     }
+
+    @Test
+    @DisplayName("로그인")
+    public void login() throws Exception {
+        // given
+        String userId = "admin06";
+        String password = "admin06!";
+
+        // expected
+        mockMvc.perform(post("/api/v1/user/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsBytes(new UserLoginRequest(userId, password))))
+                .andExpect(status().isOk())
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("로그인 시 회원가입이 안 된 userId를 입력할 경우 에러를 반환한다")
+    public void loginWithNotJoinedUserId() throws Exception {
+        // given
+        String userId = "notJoinedUser";
+        String password = "notJoinedUser!";
+
+        // mocking
+        when(mock(UserService.class).login(userId, password)).thenThrow(new ApplicationException(ErrorCode.USER_NOT_FOUND));
+
+        // expected
+        mockMvc.perform(post("/api/v1/user/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsBytes(new UserLoginRequest(userId, password))))
+                .andExpect(jsonPath("$.code").value(ErrorCode.USER_NOT_FOUND.getCode()))
+                .andExpect(status().isNotFound())
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("로그인 시 틀린 password를 입력할 경우 에러를 반환한다")
+    public void loginWithWrongPassword() throws Exception {
+        // given
+        String userId = "admin06";
+        String password = "wrongPassword";
+
+        // mocking
+        when(mock(UserService.class).login(userId, password)).thenThrow(new ApplicationException(ErrorCode.INVALID_PASSWORD));
+
+        // expected
+        mockMvc.perform(post("/api/v1/user/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsBytes(new UserLoginRequest(userId, password))))
+                .andExpect(jsonPath("$.code").value(ErrorCode.INVALID_PASSWORD.getCode()))
+                .andExpect(status().isBadRequest())
+                .andDo(print());
+    }
+
 
 }

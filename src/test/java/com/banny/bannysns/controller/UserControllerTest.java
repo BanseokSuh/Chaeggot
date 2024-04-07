@@ -84,13 +84,13 @@ class UserControllerTest {
         String password = "testUser!";
 
         // mocking
-        when(mock(UserService.class).join(userId, userName, password)).thenThrow(new ApplicationException(ErrorCode.INVALID_USER_ID_LENGTH));
+        when(mock(UserService.class).join(userId, userName, password)).thenThrow(new ApplicationException(ErrorCode.INVALID_USER_ID));
 
         // expected
         mockMvc.perform(post("/api/v1/user/join")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsBytes(new UserJoinRequest(userId, userName, password))))
-                .andExpect(jsonPath("$.code").value(ErrorCode.INVALID_USER_ID_LENGTH.getCode()))
+                .andExpect(jsonPath("$.code").value(ErrorCode.INVALID_USER_ID.getCode()))
                 .andExpect(status().isBadRequest())
                 .andDo(print());
     }

@@ -10,14 +10,14 @@ import org.hibernate.annotations.Where;
 import java.sql.Timestamp;
 import java.time.Instant;
 
-@Where(clause = "deleted_at IS NULL")
-@SQLDelete(sql = "UPDATE \"user\" SET deleted_at = NOW() WHERE id = ?")
-@Getter
 @Setter
-@Entity
+@Getter
+@SQLDelete(sql = "UPDATE \"user\" SET deleted_at = NOW() WHERE id = ?")
+@Where(clause = "deleted_at IS NULL")
 @Table(name = "\"user\"", uniqueConstraints = {
         @UniqueConstraint(name = "UNIQUE_USER_ID", columnNames = "user_id")
 })
+@Entity
 public class UserEntity {
 
     @Id
@@ -61,6 +61,7 @@ public class UserEntity {
         userEntity.setUserId(userId);
         userEntity.setUserName(userName);
         userEntity.setPassword(password);
+
         return userEntity;
     }
 }

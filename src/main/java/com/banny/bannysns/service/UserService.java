@@ -4,6 +4,7 @@ import com.banny.bannysns.exception.ApplicationException;
 import com.banny.bannysns.exception.ErrorCode;
 import com.banny.bannysns.model.User;
 import com.banny.bannysns.model.entity.UserEntity;
+import com.banny.bannysns.repository.UserCacheRepository;
 import com.banny.bannysns.repository.UserEntityRepository;
 import com.banny.bannysns.util.JwtTokenUtils;
 import io.micrometer.common.util.StringUtils;
@@ -16,11 +17,12 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@Service
 @RequiredArgsConstructor
+@Service
 public class UserService {
 
     private final UserEntityRepository userEntityRepository;
+    private final UserCacheRepository userCacheRepository;
     private final BCryptPasswordEncoder encoder;
 
     @Value("${jwt.secret-key}")
@@ -48,6 +50,43 @@ public class UserService {
         return User.fromEntity(userEntity);
     }
 
+    /**
+     * 로그인
+     * @param userId
+     * @param password
+     * @return token
+     */
+    public String login(String userId, String password) {
+        User user = loadUserByUserId(userId);
+
+        if (!encoder.matches(password, user.getPassword())) {
+            throw new ApplicationException(ErrorCode.INVALID_PASSWORD, "Password is invalid");
+        }
+
+        userCacheRepository.setUser(user);
+
+        return JwtTokenUtils.generateToken(userId, secretKey, expiredTimeMs);
+    }
+
+
+    /**
+     * userId로 유저 정보 조회
+     * @param userId
+     * @return User
+     */
+    public User loadUserByUserId(String userId) {
+        return userCacheRepository.getUser(userId).orElseGet(() ->
+                userEntityRepository.findByUserId(userId).map(User::fromEntity).orElseThrow(() ->
+                        new ApplicationException(ErrorCode.USER_NOT_FOUND, String.format("%s not found", userId)))
+        );
+    }
+
+    /**
+     * 유저 정보 유효성 검사
+     * @param userId
+     * @param userName
+     * @param password
+     */
     private void validateUserInfo(String userId, String userName, String password) {
         if (StringUtils.isBlank(userId)) {
             throw new ApplicationException(ErrorCode.EMPTY_USER_ID, String.format("User ID %s should not be empty", userId));
@@ -74,22 +113,5 @@ public class UserService {
         if (!matcher.find()) {
             throw new ApplicationException(ErrorCode.INVALID_PASSWORD, String.format("Password %s should include at least 1 special symbol", password));
         }
-    }
-
-    /**
-     * 로그인
-     * @param userId
-     * @param password
-     * @return token
-     */
-    public String login(String userId, String password) {
-        User user = userEntityRepository.findByUserId(userId).map(User::fromEntity).orElseThrow(
-                () -> new ApplicationException(ErrorCode.USER_NOT_FOUND, String.format("User ID %s not found", userId)));
-
-        if (!encoder.matches(password, user.getPassword())) {
-            throw new ApplicationException(ErrorCode.INVALID_PASSWORD, "Password is invalid");
-        }
-
-        return JwtTokenUtils.generateToken(userId, secretKey, expiredTimeMs);
     }
 }

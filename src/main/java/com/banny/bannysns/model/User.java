@@ -1,13 +1,16 @@
 package com.banny.bannysns.model;
 
 import com.banny.bannysns.model.entity.UserEntity;
-import lombok.Builder;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
 
+
+@NoArgsConstructor
+@AllArgsConstructor
 @Data
-@Builder
 public class User {
 
     private Long id;
@@ -20,15 +23,16 @@ public class User {
     private Timestamp deletedAt;
 
     public static User fromEntity(UserEntity entity) {
-        return User.builder()
-                .id(entity.getId())
-                .userId(entity.getUserId())
-                .userName(entity.getUserName())
-                .password(entity.getPassword())
-                .userRole(entity.getUserRole())
-                .createdAt(entity.getCreatedAt())
-                .updatedAt(entity.getUpdatedAt())
-                .deletedAt(entity.getDeletedAt())
-                .build();
+        User user = new User();
+        user.setId(entity.getId());
+        user.setUserId(entity.getUserId());
+        user.setUserName(entity.getUserName());
+        user.setPassword(entity.getPassword());
+        user.setUserRole(entity.getUserRole());
+        user.setCreatedAt(entity.getCreatedAt());
+        user.setUpdatedAt(entity.getUpdatedAt());
+        user.setDeletedAt(entity.getDeletedAt());
+
+        return user;
     }
 }

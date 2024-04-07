@@ -20,4 +20,8 @@ public class Response<T> {
     public static <T> Response<T> success(T result) {
         return new Response<>(HttpStatus.OK.value(), ErrorCode.OK.getCode(), result);
     }
+
+    public static Response<Void> success() {
+        return new Response<>(HttpStatus.OK.value(), ErrorCode.OK.getCode(), null);
+    }
 }

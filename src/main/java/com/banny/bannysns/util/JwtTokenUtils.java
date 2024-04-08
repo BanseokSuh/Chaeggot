@@ -1,5 +1,6 @@
 package com.banny.bannysns.util;
 
+import com.banny.bannysns.model.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -9,9 +10,12 @@ import java.security.Key;
 import java.util.Date;
 
 public class JwtTokenUtils {
-    public static String generateToken(String userId, String key, Long expiredTimeMs) {
+    public static String generateToken(User user, String key, Long expiredTimeMs) {
         Claims claims = Jwts.claims();
-        claims.put("userId", userId);
+        claims.put("userIdx", user.getId());
+        claims.put("userId", user.getUserId());
+        claims.put("userName", user.getUserName());
+        claims.put("userRole", user.getUserRole());
 
         return Jwts.builder()
                 .setClaims(claims)

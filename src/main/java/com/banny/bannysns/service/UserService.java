@@ -63,9 +63,12 @@ public class UserService {
             throw new ApplicationException(ErrorCode.INVALID_PASSWORD, "Password is invalid");
         }
 
+        String token = JwtTokenUtils.generateToken(user, secretKey, expiredTimeMs);
+
+        // TODO: Redis에 토큰 저장할 지 고민
         userCacheRepository.setUser(user);
 
-        return JwtTokenUtils.generateToken(userId, secretKey, expiredTimeMs);
+        return token;
     }
 
 
@@ -93,7 +96,7 @@ public class UserService {
         }
 
         if (userId.length() < 5) {
-            throw new ApplicationException(ErrorCode.INVALID_USER_ID_LENGTH, String.format("User ID %s is too short", userId));
+            throw new ApplicationException(ErrorCode.INVALID_USER_ID, String.format("User ID %s is too short", userId));
         }
 
         if (StringUtils.isBlank(userName)) {

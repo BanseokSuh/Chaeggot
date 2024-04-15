@@ -242,10 +242,8 @@ class UserControllerTest {
         mockMvc.perform(post("/api/v1/user/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsBytes(new UserLoginRequest(userId, password))))
-                .andExpect(jsonPath("$.code").value(ErrorCode.INVALID_PASSWORD.getCode()))
+                .andExpect(jsonPath("$.code").value(ErrorCode.WRONG_PASSWORD.getCode()))
                 .andExpect(status().isBadRequest())
                 .andDo(print());
     }
-
-
 }

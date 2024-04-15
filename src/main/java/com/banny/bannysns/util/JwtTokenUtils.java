@@ -10,6 +10,7 @@ import java.security.Key;
 import java.util.Date;
 
 public class JwtTokenUtils {
+
     public static String generateToken(User user, String key, Long expiredTimeMs) {
         Claims claims = Jwts.claims();
         claims.put("userIdx", user.getId());

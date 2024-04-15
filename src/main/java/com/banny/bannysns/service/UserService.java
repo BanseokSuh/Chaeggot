@@ -28,8 +28,8 @@ public class UserService {
     @Value("${jwt.secret-key}")
     private String secretKey;
 
-    @Value("${jwt.token.expired-time-ms}")
-    private Long expiredTimeMs;
+    @Value("${jwt.token.access-expired-time-ms}")
+    private Long accessExpiredTimeMs;
 
     /**
      * 회원가입
@@ -60,15 +60,15 @@ public class UserService {
         User user = loadUserByUserId(userId);
 
         if (!encoder.matches(password, user.getPassword())) {
-            throw new ApplicationException(ErrorCode.INVALID_PASSWORD, "Password is invalid");
+            throw new ApplicationException(ErrorCode.WRONG_PASSWORD, "Password is wrong");
         }
 
-        String token = JwtTokenUtils.generateToken(user, secretKey, expiredTimeMs);
+        String accessToken = JwtTokenUtils.generateToken(user, secretKey, accessExpiredTimeMs);
 
-        // TODO: Redis에 토큰 저장할 지 고민
+        // Cache user
         userCacheRepository.setUser(user);
 
-        return token;
+        return accessToken;
     }
 
 

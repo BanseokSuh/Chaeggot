@@ -14,7 +14,8 @@ public enum ErrorCode {
     EMPTY_USER_NAME(HttpStatus.BAD_REQUEST, 4003, "UserName is empty"),
     EMPTY_PASSWORD(HttpStatus.BAD_REQUEST, 4004, "Password is empty"),
     INVALID_PASSWORD(HttpStatus.BAD_REQUEST, 4005, "Password is invalid"),
-    USER_NOT_FOUND(HttpStatus.NOT_FOUND, 4006, "User not found"),
+    WRONG_PASSWORD(HttpStatus.BAD_REQUEST, 4006, "Password is wrong"),
+    USER_NOT_FOUND(HttpStatus.NOT_FOUND, 4007, "User not found"),
     ;
 
     private final HttpStatus httpStatus;

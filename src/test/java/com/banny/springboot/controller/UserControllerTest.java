@@ -45,7 +45,7 @@ class UserControllerTest {
         String password = "testUser!";
 
         // mocking
-        when(mock(UserService.class).join(userId, userName, password)).thenReturn(mock(User.class));
+        // when(mock(UserService.class).join(userId, userName, password)).thenReturn(mock(User.class));
 
         // expected
         mockMvc.perform(post("/api/v1/user/join")
@@ -64,7 +64,7 @@ class UserControllerTest {
         String password = "testUser!";
 
         // mocking
-        when(mock(UserService.class).join(userId, userName, password)).thenThrow(new ApplicationException(ErrorCode.EMPTY_USER_ID));
+        // when(mock(UserService.class).join(userId, userName, password)).thenThrow(new ApplicationException(ErrorCode.EMPTY_USER_ID));
 
         // expected
         mockMvc.perform(post("/api/v1/user/join")
@@ -84,7 +84,7 @@ class UserControllerTest {
         String password = "testUser!";
 
         // mocking
-        when(mock(UserService.class).join(userId, userName, password)).thenThrow(new ApplicationException(ErrorCode.INVALID_USER_ID));
+        // when(mock(UserService.class).join(userId, userName, password)).thenThrow(new ApplicationException(ErrorCode.INVALID_USER_ID));
 
         // expected
         mockMvc.perform(post("/api/v1/user/join")
@@ -104,7 +104,7 @@ class UserControllerTest {
         String password = "testUser!";
 
         // mocking
-        when(mock(UserService.class).join(userId, userName, password)).thenThrow(new ApplicationException(ErrorCode.DUPLICATED_USER_ID));
+        // when(mock(UserService.class).join(userId, userName, password)).thenThrow(new ApplicationException(ErrorCode.DUPLICATED_USER_ID));
 
         mockMvc.perform(post("/api/v1/user/join")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -123,7 +123,7 @@ class UserControllerTest {
         String password = "testUser!";
 
         // mocking
-        when(mock(UserService.class).join(userId, userName, password)).thenThrow(new ApplicationException(ErrorCode.EMPTY_USER_NAME));
+        // when(mock(UserService.class).join(userId, userName, password)).thenThrow(new ApplicationException(ErrorCode.EMPTY_USER_NAME));
 
         // expected
         mockMvc.perform(post("/api/v1/user/join")
@@ -143,7 +143,7 @@ class UserControllerTest {
         String password = ""; // Empty password
 
         // mocking
-        when(mock(UserService.class).join(userId, userName, password)).thenThrow(new ApplicationException(ErrorCode.EMPTY_PASSWORD));
+        // when(mock(UserService.class).join(userId, userName, password)).thenThrow(new ApplicationException(ErrorCode.EMPTY_PASSWORD));
 
         // expected
         mockMvc.perform(post("/api/v1/user/join")
@@ -163,7 +163,7 @@ class UserControllerTest {
         String password = "test"; // 4 letters of password
 
         // mocking
-        when(mock(UserService.class).join(userId, userName, password)).thenThrow(new ApplicationException(ErrorCode.INVALID_PASSWORD));
+        // when(mock(UserService.class).join(userId, userName, password)).thenThrow(new ApplicationException(ErrorCode.INVALID_PASSWORD));
 
         // expected
         mockMvc.perform(post("/api/v1/user/join")
@@ -183,7 +183,7 @@ class UserControllerTest {
         String password = "testUser"; // No special character in password
 
         // mocking
-        when(mock(UserService.class).join(userId, userName, password)).thenThrow(new ApplicationException(ErrorCode.INVALID_PASSWORD));
+        // when(mock(UserService.class).join(userId, userName, password)).thenThrow(new ApplicationException(ErrorCode.INVALID_PASSWORD));
 
         // expected
         mockMvc.perform(post("/api/v1/user/join")
@@ -217,7 +217,7 @@ class UserControllerTest {
         String password = "notJoinedUser!";
 
         // mocking
-        when(mock(UserService.class).login(userId, password)).thenThrow(new ApplicationException(ErrorCode.USER_NOT_FOUND));
+        // when(mock(UserService.class).login(userId, password)).thenThrow(new ApplicationException(ErrorCode.USER_NOT_FOUND));
 
         // expected
         mockMvc.perform(post("/api/v1/user/login")
@@ -236,7 +236,7 @@ class UserControllerTest {
         String password = "wrongPassword";
 
         // mocking
-        when(mock(UserService.class).login(userId, password)).thenThrow(new ApplicationException(ErrorCode.INVALID_PASSWORD));
+        // when(mock(UserService.class).login(userId, password)).thenThrow(new ApplicationException(ErrorCode.INVALID_PASSWORD));
 
         // expected
         mockMvc.perform(post("/api/v1/user/login")

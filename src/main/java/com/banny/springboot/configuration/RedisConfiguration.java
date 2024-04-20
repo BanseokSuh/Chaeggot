@@ -19,17 +19,18 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 @Configuration
 public class RedisConfiguration {
 
-    @Value("${spring.redis.host}")
-    private String host;
-
-    @Value("${spring.redis.port}")
-    private int port;
+//    @Value("${spring.redis.host}")
+//    private String host;
+//
+//    @Value("${spring.redis.port}")
+//    private int port;
 
     private final RedisProperties redisProperties;
 
     @Bean
     public RedisConnectionFactory redisConnectionFactory() {
-        RedisURI redisURI = RedisURI.create(host, port);
+//        RedisURI redisURI = RedisURI.create(host, port);
+        RedisURI redisURI = RedisURI.create(redisProperties.getHost(), redisProperties.getPort());
         org.springframework.data.redis.connection.RedisConfiguration redisConfiguration = LettuceConnectionFactory.createRedisConfiguration(redisURI);
         LettuceConnectionFactory factory = new LettuceConnectionFactory(redisConfiguration);
         factory.afterPropertiesSet();

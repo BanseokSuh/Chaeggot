@@ -20,12 +20,24 @@ public class UserController {
 
     private final UserService userService;
 
+    /**
+     * Join
+     *
+     * @param request
+     * @return
+     */
     @PostMapping("join")
     public Response<UserJoinResponse> join(@RequestBody UserJoinRequest request) {
         User user = userService.join(request.getUserId(), request.getUserName(), request.getPassword());
         return Response.success(UserJoinResponse.fromUser(user));
     }
 
+    /**
+     * Login
+     *
+     * @param request
+     * @return
+     */
     @PostMapping("login")
     public Response<UserLoginResponse> login(@RequestBody UserLoginRequest request) {
         String token = userService.login(request.getUserId(), request.getPassword());

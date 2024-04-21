@@ -18,7 +18,8 @@ public class PostController {
     private final PostService postService;
 
     /**
-     * 게시글 생성
+     * Create post
+     *
      * @param request
      * @return
      */

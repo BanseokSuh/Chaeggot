@@ -32,7 +32,8 @@ public class UserService {
     private Long accessExpiredTimeMs;
 
     /**
-     * 회원가입
+     * Join
+     *
      * @param userId
      * @param userName
      * @param password
@@ -40,18 +41,28 @@ public class UserService {
      */
     @Transactional
     public User join(String userId, String userName, String password) {
+        /**
+         * Valid check for user info
+         */
         validateUserInfo(userId, userName, password);
 
+        /**
+         * Check duplicated user id
+         */
         userEntityRepository.findByUserId(userId).ifPresent(it -> {
             throw new ApplicationException(ErrorCode.DUPLICATED_USER_ID, String.format("User ID %s is duplicated", userId));
         });
 
+        /**
+         * Save user info
+         */
         UserEntity userEntity = userEntityRepository.save(UserEntity.of(userId, userName, encoder.encode(password)));
         return User.fromEntity(userEntity);
     }
 
     /**
-     * 로그인
+     * Login
+     *
      * @param userId
      * @param password
      * @return token
@@ -65,7 +76,9 @@ public class UserService {
 
         String accessToken = JwtTokenUtils.generateToken(user, secretKey, accessExpiredTimeMs);
 
-        // Cache user
+        /**
+         * Cache user info
+         */
         userCacheRepository.setUser(user);
 
         return accessToken;
@@ -73,7 +86,11 @@ public class UserService {
 
 
     /**
-     * userId로 유저 정보 조회
+     * Load user by userId.
+     * - Get user from cache first.
+     * - If not exist, get user from DB using .orElseGet() method.
+     * - If not exist, throw exception.
+     *
      * @param userId
      * @return User
      */
@@ -85,7 +102,8 @@ public class UserService {
     }
 
     /**
-     * 유저 정보 유효성 검사
+     * Valid check for user info
+     *
      * @param userId
      * @param userName
      * @param password

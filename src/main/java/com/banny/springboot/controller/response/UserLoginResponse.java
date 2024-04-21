@@ -9,8 +9,6 @@ public class UserLoginResponse {
     String token;
 
     public static UserLoginResponse fromToken(String token) {
-        return new UserLoginResponse(
-                token
-        );
+        return new UserLoginResponse(token);
     }
 }

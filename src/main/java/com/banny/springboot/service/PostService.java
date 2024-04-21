@@ -16,14 +16,27 @@ public class PostService {
     private final PostEntityRepository postEntityRepository;
     private final UserEntityRepository userEntityRepository;
 
+    /**
+     * Create post
+     *
+     * @param title
+     * @param content
+     * @return
+     */
     public Long createPost(String title, String content) {
-        String userId = "admin06"; // TODO: 추후 인증 구현 후 수정
+        String userId = "admin0"; // TODO: Get user ID from authentication
         UserEntity userEntity = getUserEntityOrException(userId);
 
         PostEntity postEntity = postEntityRepository.save(PostEntity.of(title, content, userEntity));
         return postEntity.getId();
     }
 
+    /**
+     * Get user entity or exception
+     *
+     * @param userId
+     * @return
+     */
     public UserEntity getUserEntityOrException(String userId) {
         return userEntityRepository.findByUserId(userId).orElseThrow(() ->
                 new ApplicationException(ErrorCode.USER_NOT_FOUND, String.format("User ID %s not found", userId)));

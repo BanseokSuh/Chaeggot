@@ -15,7 +15,8 @@ import java.time.Instant;
 @SQLDelete(sql = "UPDATE \"user\" SET deleted_at = NOW() WHERE id = ?")
 @Where(clause = "deleted_at IS NULL")
 @Table(name = "\"user\"", uniqueConstraints = {
-        @UniqueConstraint(name = "UNIQUE_USER_ID", columnNames = "user_id")
+        @UniqueConstraint(name = "UNIQUE_USER_ID", columnNames = "user_id"),
+        @UniqueConstraint(name = "UNIQUE_EMAIL", columnNames = "email")
 })
 @Entity
 public class UserEntity {
@@ -29,6 +30,9 @@ public class UserEntity {
 
     @Column(name = "user_name", nullable = false)
     private String userName;
+
+    @Column(name = "email")
+    private String email;
 
     @Column(name = "password", nullable = false)
     private String password;

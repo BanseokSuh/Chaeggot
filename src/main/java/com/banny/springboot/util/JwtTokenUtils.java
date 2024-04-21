@@ -11,9 +11,17 @@ import java.util.Date;
 
 public class JwtTokenUtils {
 
+    /**
+     * Generate token
+     *
+     * @param user
+     * @param key
+     * @param expiredTimeMs
+     * @return Token
+     */
     public static String generateToken(User user, String key, Long expiredTimeMs) {
         Claims claims = Jwts.claims();
-        claims.put("userIdx", user.getId());
+        claims.put("id", user.getId());
         claims.put("userId", user.getUserId());
         claims.put("userName", user.getUserName());
         claims.put("userRole", user.getUserRole());
@@ -22,11 +30,17 @@ public class JwtTokenUtils {
                 .setClaims(claims)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + expiredTimeMs))
-                .signWith(getKey(key), SignatureAlgorithm.HS256)
+                .signWith(getSigningKey(key), SignatureAlgorithm.HS256)
                 .compact();
     }
 
-    private static Key getKey(String key) {
+    /**
+     * Get signing key
+     *
+     * @param key
+     * @return Key
+     */
+    private static Key getSigningKey(String key) {
         return Keys.hmacShaKeyFor(key.getBytes());
     }
 }

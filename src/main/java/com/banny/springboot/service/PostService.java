@@ -23,8 +23,7 @@ public class PostService {
      * @param content
      * @return
      */
-    public Long createPost(String title, String content) {
-        String userId = "admin0"; // TODO: Get user ID from authentication
+    public Long createPost(String title, String content, String userId) {
         UserEntity userEntity = getUserEntityOrException(userId);
 
         PostEntity postEntity = postEntityRepository.save(PostEntity.of(title, content, userEntity));

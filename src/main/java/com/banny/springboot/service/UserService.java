@@ -41,22 +41,18 @@ public class UserService {
      */
     @Transactional
     public User join(String userId, String userName, String password) {
-        /**
-         * Valid check for user info
-         */
+
+        // Valid check for user info
         validateUserInfo(userId, userName, password);
 
-        /**
-         * Check duplicated user id
-         */
+        // Check duplicated user id
         userEntityRepository.findByUserId(userId).ifPresent(it -> {
             throw new ApplicationException(ErrorCode.DUPLICATED_USER_ID, String.format("User ID %s is duplicated", userId));
         });
 
-        /**
-         * Save user info
-         */
+        // Save user info
         UserEntity userEntity = userEntityRepository.save(UserEntity.of(userId, userName, encoder.encode(password)));
+
         return User.fromEntity(userEntity);
     }
 
@@ -68,6 +64,7 @@ public class UserService {
      * @return token
      */
     public String login(String userId, String password) {
+
         // Get user info
         User user = loadUserByUserId(userId);
 

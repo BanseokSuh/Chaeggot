@@ -29,9 +29,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         final String header = request.getHeader(HttpHeaders.AUTHORIZATION);
         final String token;
 
-        /**
-         * the Authorization header is not present, return.
-         */
+        // the Authorization header is not present, return.
         try {
             if (header == null || !header.startsWith("Bearer ")) {
                 log.error("Authorization Header does not start with Bearer {}", request.getRequestURI());
@@ -42,33 +40,27 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                 token = header.split(" ")[1].trim();
             }
 
-            /**
-             * Get userId from the token
-             */
+            // Get userId from the token
             String userId = JwtTokenUtils.getUserId(token, secretKey);
 
-            /**
-             * Load user info by userId
-             */
+            // Load user info by userId
             User userDetails = userService.loadUserByUserId(userId);
 
-            /**
-             * Check if the token is valid
-             */
+            // Check if the token is valid
             if (!JwtTokenUtils.isTokenValid(token, userId, secretKey)) {
                 filterChain.doFilter(request, response);
                 return;
             }
 
-            /**
-             * principal: The user object that is authenticated
-             * credentials: The password of the user
-             * authorities: The roles of the user
-             */
+            // principal: The user object that is authenticated
+            // credentials: The password of the user
+            // authorities: The roles of the user
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                     userDetails, null, userDetails.getAuthorities()
             );
+
             authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
             SecurityContextHolder.getContext().setAuthentication(authentication);
         } catch (RuntimeException e) {
             log.error("Error occurs while validating. {}", e.toString());

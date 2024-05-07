@@ -58,4 +58,9 @@ public class PostEntity {
 
         return postEntity;
     }
+
+    public void modify(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
 }

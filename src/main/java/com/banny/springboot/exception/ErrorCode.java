@@ -18,6 +18,10 @@ public enum ErrorCode {
     WRONG_PASSWORD(HttpStatus.BAD_REQUEST, 400006, "Password is wrong"),
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, 400007, "User not found"),
     INVALID_TOKEN(HttpStatus.UNAUTHORIZED, 400008, "Token is invalid"),
+    INVALID_PERMISSION(HttpStatus.FORBIDDEN, 400009, "Permission is invalid"),
+
+    // 4100 ~ 4199 : Post
+    POST_NOT_FOUND(HttpStatus.NOT_FOUND, 400100, "Post not found"),
     ;
 
     private final HttpStatus httpStatus;

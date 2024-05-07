@@ -41,9 +41,10 @@ public class PostControllerTest {
     @Autowired
     private UserService userService;
 
+    // todo: refactor this test
     @Test
-    @WithMockUser
     @Transactional
+//    @WithMockUser(username = "admin00", roles = {"USER"})
     @DisplayName("게시글 작성")
     public void createPost() throws Exception {
         String title = "Test_title_001";
@@ -59,4 +60,17 @@ public class PostControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk());
     }
+
+//    @Test
+//    @DisplayName("게시글 작성 실패")
+//    public void createPostFail() throws Exception {
+//        String title = "Test_title_001";
+//        String body = "Test_body_001";
+//
+//        mockMvc.perform(post("/api/v1/post")
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .content(objectMapper.writeValueAsBytes(new PostCreateRequest(title, body))))
+//                .andDo(print())
+//                .andExpect(status().isUnauthorized());
+//    }
 }

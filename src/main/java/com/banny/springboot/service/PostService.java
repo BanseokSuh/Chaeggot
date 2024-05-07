@@ -27,7 +27,7 @@ public class PostService {
         UserEntity userEntity = getUserEntityOrException(userId);
 
         PostEntity postEntity = postEntityRepository.save(PostEntity.of(title, content, userEntity));
-        return postEntity.getId();
+        return postEntity.getPostIdx();
     }
 
     /**

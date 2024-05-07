@@ -27,14 +27,11 @@ public class PostController {
      */
     @PostMapping
     public Response<PostCreateResponse> createPost(@RequestBody PostCreateRequest request, Authentication authentication) {
-        /**
-         * Get the user information from the authentication object.
-         */
+
+        // Get the user information from the authentication object.
         User user = (User) authentication.getPrincipal();
 
-        /**
-         * Create a post.
-         */
+        // Create a post.
         Long postId = postService.createPost(request.getTitle(), request.getContent(), user.getUserId());
 
         return Response.success(PostCreateResponse.of(postId));

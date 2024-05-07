@@ -74,7 +74,7 @@ public class JwtTokenUtils {
      */
     public static String generateToken(User user, String key, Long expiredTimeMs) {
         Claims claims = Jwts.claims();
-        claims.put("id", user.getId());
+        claims.put("userIdx", user.getUserIdx());
         claims.put("userId", user.getUserId());
         claims.put("userName", user.getUsername());
         claims.put("userRole", user.getUserRole());

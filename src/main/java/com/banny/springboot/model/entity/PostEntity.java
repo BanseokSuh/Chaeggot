@@ -10,7 +10,7 @@ import java.sql.Timestamp;
 
 @Setter
 @Getter
-@SQLDelete(sql = "UPDATE \"post\" SET deleted_at = NOW() WHERE id = ?")
+@SQLDelete(sql = "UPDATE \"post\" SET deleted_at = NOW() WHERE post_idx = ?")
 @Where(clause = "deleted_at IS NULL")
 @Table(name = "\"post\"")
 @Entity
@@ -18,7 +18,8 @@ public class PostEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "post_idx", nullable = false)
+    private Long postIdx;
 
     @Column(name = "title", columnDefinition = "TEXT")
     private String title;
@@ -27,7 +28,7 @@ public class PostEntity {
     private String content;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_idx")
     private UserEntity user;
 
     @Column(name = "created_at", nullable = false)

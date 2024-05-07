@@ -11,7 +11,7 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Post {
-    private Long id;
+    private Long postIdx;
     private String title;
     private String content;
     private User user;
@@ -21,7 +21,7 @@ public class Post {
 
     public static Post fromEntity(PostEntity entity) {
         Post post = new Post();
-        post.setId(entity.getId());
+        post.setPostIdx(entity.getPostIdx());
         post.setTitle(entity.getTitle());
         post.setContent(entity.getContent());
         post.setUser(User.fromEntity(entity.getUser()));

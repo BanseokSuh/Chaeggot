@@ -12,7 +12,7 @@ import java.time.Instant;
 
 @Setter
 @Getter
-@SQLDelete(sql = "UPDATE \"user\" SET deleted_at = NOW() WHERE id = ?")
+@SQLDelete(sql = "UPDATE \"user\" SET deleted_at = NOW() WHERE user_idx = ?")
 @Where(clause = "deleted_at IS NULL")
 @Table(name = "\"user\"", uniqueConstraints = {
         @UniqueConstraint(name = "UNIQUE_USER_ID", columnNames = "user_id"),
@@ -23,8 +23,8 @@ public class UserEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
-    private Long id;
+    @Column(name = "user_idx", nullable = false)
+    private Long userIdx;
 
     @Column(name = "user_id", nullable = false)
     private String userId;

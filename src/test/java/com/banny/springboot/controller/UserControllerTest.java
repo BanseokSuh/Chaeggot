@@ -99,7 +99,7 @@ class UserControllerTest {
     @DisplayName("회원가입 시 이미 회원가입된 userId로 회원가입을 하는 경우 에러를 반환한다")
     public void joinWithDuplicatedUserId() throws Exception {
         // given
-        String userId = "testUser002"; // Duplicated userId
+        String userId = "admin00"; // Duplicated userId
         String userName = "서반석";
         String password = "testUser!";
 
@@ -198,8 +198,8 @@ class UserControllerTest {
     @DisplayName("로그인")
     public void login() throws Exception {
         // given
-        String userId = "admin06";
-        String password = "admin06!";
+        String userId = "admin00";
+        String password = "admin00!";
 
         // expected
         mockMvc.perform(post("/api/v1/user/login")
@@ -232,7 +232,7 @@ class UserControllerTest {
     @DisplayName("로그인 시 틀린 password를 입력할 경우 에러를 반환한다")
     public void loginWithWrongPassword() throws Exception {
         // given
-        String userId = "admin06";
+        String userId = "admin00";
         String password = "wrongPassword";
 
         // mocking

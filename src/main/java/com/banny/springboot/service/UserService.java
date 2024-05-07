@@ -68,26 +68,18 @@ public class UserService {
      * @return token
      */
     public String login(String userId, String password) {
-        /**
-         * Get user info
-         */
+        // Get user info
         User user = loadUserByUserId(userId);
 
-        /**
-         * Check password if it is correct
-         */
+        // Check password if it is correct
         if (!encoder.matches(password, user.getPassword())) {
             throw new ApplicationException(ErrorCode.WRONG_PASSWORD, "Password is wrong");
         }
 
-        /**
-         * Generate token with secret key and expired time
-         */
+        // Generate token with secret key and expired time
         String accessToken = JwtTokenUtils.generateToken(user, secretKey, accessExpiredTimeMs);
 
-        /**
-         * Cache user info
-         */
+        // Cache user info
         userCacheRepository.setUser(user);
 
         return accessToken;
@@ -112,6 +104,7 @@ public class UserService {
 
     /**
      * Valid check for user info
+     * todo: Move this method to a separate class
      *
      * @param userId
      * @param userName

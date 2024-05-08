@@ -43,13 +43,13 @@ public class PostControllerTest {
     // todo: refactor this test
     @Test
     @Transactional
-    // @WithMockUser(username = "admin00", roles = {"USER"})
+    // @WithMockUser(username = "admin", roles = {"USER"})
     @DisplayName("게시글 작성")
     public void createPost() throws Exception {
         String title = "Test_title_001";
         String body = "Test_body_001";
 
-        User user = userService.loadUserByUserId("admin00");
+        User user = userService.loadUserByUserId("admin");
         String token = generateToken(user, secretKey, accessExpiredTimeMs);
 
         mockMvc.perform(post("/api/v1/post")
@@ -81,7 +81,7 @@ public class PostControllerTest {
         String title = "Modify_title_002";
         String body = "Modify_body_002";
 
-        User user = userService.loadUserByUserId("admin00");
+        User user = userService.loadUserByUserId("admin");
         String token = generateToken(user, secretKey, accessExpiredTimeMs);
 
         mockMvc.perform(put("/api/v1/post/1")
@@ -113,10 +113,10 @@ public class PostControllerTest {
         String title = "Modify_title_002";
         String body = "Modify_body_002";
 
-        User user = userService.loadUserByUserId("admin00");
+        User user = userService.loadUserByUserId("admin");
         String token = generateToken(user, secretKey, accessExpiredTimeMs);
 
-        mockMvc.perform(put("/api/v1/post/6")
+        mockMvc.perform(put("/api/v1/post/2")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + token)
                         .content(objectMapper.writeValueAsBytes(new PostModifyRequest(title, body))))

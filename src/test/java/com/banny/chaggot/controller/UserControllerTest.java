@@ -87,9 +87,9 @@ class UserControllerTest {
     @DisplayName("회원가입 시 이미 회원가입된 userId로 회원가입을 하는 경우 에러를 반환한다")
     public void joinWithDuplicatedUserId() throws Exception {
         // given
-        String userId = "admin00"; // Duplicated userId
+        String userId = "admin"; // Duplicated userId
         String userName = "서반석";
-        String password = "testUser!";
+        String password = "admin!";
 
         // expected
         mockMvc.perform(post("/api/v1/user/join")

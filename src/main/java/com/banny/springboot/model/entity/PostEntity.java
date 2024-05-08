@@ -4,14 +4,14 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
+import org.hibernate.annotations.SQLRestriction;
 
 import java.sql.Timestamp;
 
 @Setter
 @Getter
 @SQLDelete(sql = "UPDATE \"post\" SET deleted_at = NOW() WHERE post_idx = ?")
-@Where(clause = "deleted_at IS NULL")
+@SQLRestriction("deleted_at IS NULL")
 @Table(name = "\"post\"")
 @Entity
 public class PostEntity {

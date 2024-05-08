@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
+import org.hibernate.annotations.SQLRestriction;
 
 import java.sql.Timestamp;
 import java.time.Instant;
@@ -13,7 +13,7 @@ import java.time.Instant;
 @Setter
 @Getter
 @SQLDelete(sql = "UPDATE \"user\" SET deleted_at = NOW() WHERE user_idx = ?")
-@Where(clause = "deleted_at IS NULL")
+@SQLRestriction("deleted_at IS NULL")
 @Table(name = "\"user\"", uniqueConstraints = {
         @UniqueConstraint(name = "UNIQUE_USER_ID", columnNames = "user_id"),
         @UniqueConstraint(name = "UNIQUE_EMAIL", columnNames = "email")

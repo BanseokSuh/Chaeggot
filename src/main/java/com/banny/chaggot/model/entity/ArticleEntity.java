@@ -21,16 +21,16 @@ public class ArticleEntity {
     @Column(name = "article_idx", nullable = false)
     private Long articleIdx;
 
-    @Column(name = "title")
+    @Column(name = "title", nullable = false)
     private String title;
 
-    @Column(name = "platform")
+    @Column(name = "platform", nullable = false)
     private String platform;
 
-    @Column(name = "url")
+    @Column(name = "url", nullable = false)
     private String url;
 
-    @Column(name = "memo")
+    @Column(name = "memo", columnDefinition = "TEXT")
     private String memo;
 
     @ManyToOne

@@ -84,6 +84,17 @@ public class PostService {
         return postEntityRepository.findAll(pageable).map(Post::fromEntity);
     }
 
+    /**
+     * Get post
+     *
+     * @param postIdx
+     * @return
+     */
+    public Post getPost(Long postIdx) {
+        return postEntityRepository.findById(postIdx).map(Post::fromEntity).orElseThrow(() ->
+                new ApplicationException(ErrorCode.POST_NOT_FOUND, String.format("PostIdx[%s] not found", postIdx)));
+    }
+
     // =================================================================================================================
 
     /**

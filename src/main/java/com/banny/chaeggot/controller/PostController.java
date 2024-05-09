@@ -7,6 +7,7 @@ import com.banny.chaeggot.controller.response.PostResponse;
 import com.banny.chaeggot.controller.response.Response;
 import com.banny.chaeggot.model.User;
 import com.banny.chaeggot.service.PostService;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -76,5 +77,16 @@ public class PostController {
     @GetMapping
     public Response<Page<PostResponse>> getPosts(Pageable pageable) {
         return Response.success(postService.getPosts(pageable).map(PostResponse::fromPost));
+    }
+
+    /**
+     * Get post
+     *
+     * @param postIdx
+     * @return
+     */
+    @GetMapping("/{postIdx}")
+    public Response<PostResponse> getPost(@PathVariable(name = "postIdx") Long postIdx) {
+        return Response.success(PostResponse.fromPost(postService.getPost(postIdx)));
     }
 }

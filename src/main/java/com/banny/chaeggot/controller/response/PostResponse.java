@@ -15,7 +15,7 @@ public class PostResponse {
     private Long postIdx;
     private String title;
     private String content;
-    private User user;
+    private UserResponse userResponse;
     private Timestamp createdAt;
     private Timestamp updatedAt;
     private Timestamp deletedAt;
@@ -25,7 +25,7 @@ public class PostResponse {
                 post.getPostIdx(),
                 post.getTitle(),
                 post.getContent(),
-                post.getUser(),
+                UserResponse.fromUser(post.getUser()),
                 post.getCreatedAt(),
                 post.getUpdatedAt(),
                 post.getDeletedAt()

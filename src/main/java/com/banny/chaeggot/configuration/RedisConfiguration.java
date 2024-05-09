@@ -22,7 +22,6 @@ public class RedisConfiguration {
 
     /**
      * Create a connection factory using the RedisProperties.
-     *
      * @return
      */
     @Bean
@@ -37,7 +36,6 @@ public class RedisConfiguration {
 
     /**
      * Create a RedisTemplate for User.
-     *
      * @param redisConnectionFactory
      * @return
      */

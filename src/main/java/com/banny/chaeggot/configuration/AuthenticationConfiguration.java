@@ -28,7 +28,6 @@ public class AuthenticationConfiguration {
     /**
      * The below urls are ignored by the filter.
      * The requestMatchers() is used to ignore the specified urls.
-     *
      * @return WebSecurityCustomizer
      */
     @Bean
@@ -38,7 +37,6 @@ public class AuthenticationConfiguration {
 
     /**
      * SecurityFilterChain is an interface that defines the filter chain for Spring Security.
-     *
      * TODO:
      * UsernamePasswordAuthenticationFilter
      * exceptionHandling()

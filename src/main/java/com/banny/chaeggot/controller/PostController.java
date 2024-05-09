@@ -3,10 +3,13 @@ package com.banny.chaeggot.controller;
 import com.banny.chaeggot.controller.request.PostCreateRequest;
 import com.banny.chaeggot.controller.request.PostModifyRequest;
 import com.banny.chaeggot.controller.response.PostCreateResponse;
+import com.banny.chaeggot.controller.response.PostResponse;
 import com.banny.chaeggot.controller.response.Response;
 import com.banny.chaeggot.model.User;
 import com.banny.chaeggot.service.PostService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +22,7 @@ public class PostController {
 
     /**
      * Create post
+     *
      * @param request
      * @return
      */
@@ -36,6 +40,7 @@ public class PostController {
 
     /**
      * Modify post
+     *
      * @param postIdx
      * @param request
      * @param authentication
@@ -50,6 +55,7 @@ public class PostController {
 
     /**
      * Delete post
+     *
      * @param postIdx
      * @param authentication
      * @return
@@ -59,5 +65,16 @@ public class PostController {
         User user = (User) authentication.getPrincipal();
         postService.deletePost(user.getUserIdx(), postIdx);
         return Response.success();
+    }
+
+    /**
+     * Get posts
+     *
+     * @param pageable
+     * @return
+     */
+    @GetMapping
+    public Response<Page<PostResponse>> getPosts(Pageable pageable) {
+        return Response.success(postService.getPosts(pageable).map(PostResponse::fromPost));
     }
 }

@@ -1,12 +1,16 @@
 package com.banny.chaeggot.service;
 
+import com.banny.chaeggot.controller.response.PostResponse;
 import com.banny.chaeggot.exception.ApplicationException;
 import com.banny.chaeggot.exception.ErrorCode;
+import com.banny.chaeggot.model.Post;
 import com.banny.chaeggot.model.entity.PostEntity;
 import com.banny.chaeggot.model.entity.UserEntity;
 import com.banny.chaeggot.repository.PostEntityRepository;
 import com.banny.chaeggot.repository.UserEntityRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
@@ -32,6 +36,7 @@ public class PostService {
 
     /**
      * Modify post
+     *
      * @param title
      * @param content
      * @param userIdx
@@ -52,6 +57,7 @@ public class PostService {
 
     /**
      * Delete post
+     *
      * @param userIdx
      * @param postIdx
      */
@@ -66,12 +72,23 @@ public class PostService {
         postEntity.delete();
 
         postEntityRepository.saveAndFlush(postEntity);
+    }
 
+    /**
+     * Get posts
+     *
+     * @param pageable
+     * @return
+     */
+    public Page<Post> getPosts(Pageable pageable) {
+        return postEntityRepository.findAll(pageable).map(Post::fromEntity);
     }
 
     // =================================================================================================================
+
     /**
      * Get user entity or exception
+     *
      * @param userIdx
      * @return
      */
@@ -82,6 +99,7 @@ public class PostService {
 
     /**
      * Get post entity or exception
+     *
      * @param postIdx
      * @return
      */

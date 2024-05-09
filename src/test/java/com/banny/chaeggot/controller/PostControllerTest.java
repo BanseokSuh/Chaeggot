@@ -116,7 +116,7 @@ public class PostControllerTest {
         User user = userService.loadUserByUserId("admin");
         String token = generateToken(user, secretKey, accessExpiredTimeMs);
 
-        mockMvc.perform(put("/api/v1/post/2")
+        mockMvc.perform(put("/api/v1/post/3")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + token)
                         .content(objectMapper.writeValueAsBytes(new PostModifyRequest(title, body))))

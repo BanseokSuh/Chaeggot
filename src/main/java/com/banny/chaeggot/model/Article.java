@@ -16,6 +16,7 @@ public class Article {
     private String platform;
     private String url;
     private String memo;
+    private int viewCount;
     private User user;
     private Timestamp createdAt;
     private Timestamp updatedAt;
@@ -28,6 +29,7 @@ public class Article {
         article.setPlatform(entity.getPlatform());
         article.setUrl(entity.getUrl());
         article.setMemo(entity.getMemo());
+        article.setViewCount(entity.getViewCount());
         article.setUser(User.fromEntity(entity.getUser()));
         article.setCreatedAt(entity.getCreatedAt());
         article.setUpdatedAt(entity.getUpdatedAt());

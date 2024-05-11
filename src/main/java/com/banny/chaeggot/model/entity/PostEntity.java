@@ -27,6 +27,7 @@ public class PostEntity {
     @Column(name = "content")
     private String content;
 
+    // @ManyToOne(fetch = FetchType.LAZY) // 지연 로딩
     @ManyToOne
     @JoinColumn(name = "user_idx")
     private UserEntity user;
@@ -40,6 +41,15 @@ public class PostEntity {
     @Column(name = "deleted_at")
     private Timestamp deletedAt;
 
+    public static PostEntity of(String title, String content, UserEntity user) {
+        PostEntity postEntity = new PostEntity();
+        postEntity.setTitle(title);
+        postEntity.setContent(content);
+        postEntity.setUser(user);
+
+        return postEntity;
+    }
+
     @PrePersist
     void createdAt() {
         this.createdAt = new Timestamp(System.currentTimeMillis());
@@ -48,15 +58,6 @@ public class PostEntity {
     @PreUpdate
     void updatedAt() {
         this.updatedAt = new Timestamp(System.currentTimeMillis());
-    }
-
-    public static PostEntity of(String title, String content, UserEntity user) {
-        PostEntity postEntity = new PostEntity();
-        postEntity.setTitle(title);
-        postEntity.setContent(content);
-        postEntity.setUser(user);
-
-        return postEntity;
     }
 
     public void modify(String title, String content) {

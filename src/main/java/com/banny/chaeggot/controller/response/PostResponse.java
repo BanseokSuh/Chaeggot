@@ -15,7 +15,7 @@ public class PostResponse {
     private Long postIdx;
     private String title;
     private String content;
-    private UserResponse userResponse;
+    private UserResponse user;
     private Timestamp createdAt;
     private Timestamp updatedAt;
     private Timestamp deletedAt;

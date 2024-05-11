@@ -33,6 +33,9 @@ public class ArticleEntity {
     @Column(name = "memo", columnDefinition = "TEXT")
     private String memo;
 
+    @Column(name = "view_count", nullable = false)
+    private int viewCount;
+
     @ManyToOne
     @JoinColumn(name = "user_idx")
     private UserEntity user;

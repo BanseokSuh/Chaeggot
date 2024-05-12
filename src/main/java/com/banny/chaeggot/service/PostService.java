@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 public class PostService {
 
     private final PostEntityRepository postEntityRepository;
-    private final UserEntityRepository userEntityRepository;
+    private final UserService userService;
 
     /**
      * Create post
@@ -27,11 +27,11 @@ public class PostService {
      * @param content
      * @return
      */
-    public Long createPost(String title, String content, Long userIdx) {
-        UserEntity userEntity = getUserEntityOrException(userIdx);
+    public Post createPost(String title, String content, Long userIdx) {
+        UserEntity userEntity = userService.getUserEntityOrException(userIdx);
 
         PostEntity postEntity = postEntityRepository.save(PostEntity.of(title, content, userEntity));
-        return postEntity.getPostIdx();
+        return Post.fromEntity(postEntity);
     }
 
     /**
@@ -43,7 +43,7 @@ public class PostService {
      * @param postIdx
      */
     public void modifyPost(String title, String content, Long userIdx, Long postIdx) {
-        UserEntity userEntity = getUserEntityOrException(userIdx);
+        UserEntity userEntity = userService.getUserEntityOrException(userIdx);
         PostEntity postEntity = getPostEntityOrException(postIdx);
 
         if (!postEntity.getUser().equals(userEntity)) {
@@ -62,7 +62,7 @@ public class PostService {
      * @param postIdx
      */
     public void deletePost(Long userIdx, Long postIdx) {
-        UserEntity userEntity = getUserEntityOrException(userIdx);
+        UserEntity userEntity = userService.getUserEntityOrException(userIdx);
         PostEntity postEntity = getPostEntityOrException(postIdx);
 
         if (!postEntity.getUser().equals(userEntity)) {
@@ -96,17 +96,6 @@ public class PostService {
     }
 
     // =================================================================================================================
-
-    /**
-     * Get user entity or exception
-     *
-     * @param userIdx
-     * @return
-     */
-    public UserEntity getUserEntityOrException(Long userIdx) {
-        return userEntityRepository.findByUserIdx(userIdx).orElseThrow(() ->
-                new ApplicationException(ErrorCode.USER_NOT_FOUND, String.format("UserIdx[%s] not found", userIdx)));
-    }
 
     /**
      * Get post entity or exception

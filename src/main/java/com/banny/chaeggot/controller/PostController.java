@@ -5,6 +5,7 @@ import com.banny.chaeggot.controller.request.PostModifyRequest;
 import com.banny.chaeggot.controller.response.PostCreateResponse;
 import com.banny.chaeggot.controller.response.PostResponse;
 import com.banny.chaeggot.controller.response.Response;
+import com.banny.chaeggot.model.Post;
 import com.banny.chaeggot.model.User;
 import com.banny.chaeggot.service.PostService;
 import lombok.Getter;
@@ -34,9 +35,9 @@ public class PostController {
         User user = (User) authentication.getPrincipal();
 
         // Create a post.
-        Long postId = postService.createPost(request.getTitle(), request.getContent(), user.getUserIdx());
+        Post post = postService.createPost(request.getTitle(), request.getContent(), user.getUserIdx());
 
-        return Response.success(PostCreateResponse.of(postId));
+        return Response.success(PostCreateResponse.of(post));
     }
 
     /**

@@ -29,7 +29,7 @@ public class UserService {
     private String secretKey;
 
     @Value("${jwt.token.access-expired-time-ms}")
-    private Long accessExpiredTimeMs;
+    private Long accessTokenExpiredTimeMs;
 
     /**
      * Join
@@ -74,7 +74,7 @@ public class UserService {
         }
 
         // Generate token with secret key and expired time
-        String accessToken = JwtTokenUtils.generateToken(user, secretKey, accessExpiredTimeMs);
+        String accessToken = JwtTokenUtils.generateToken(user, secretKey, accessTokenExpiredTimeMs);
 
         // Cache user info
         userCacheRepository.setUser(user);
@@ -82,6 +82,7 @@ public class UserService {
         return accessToken;
     }
 
+    // =================================================================================================================
 
     /**
      * Load user by userId.
@@ -97,6 +98,17 @@ public class UserService {
                 userEntityRepository.findByUserId(userId).map(User::fromEntity).orElseThrow(() ->
                         new ApplicationException(ErrorCode.USER_NOT_FOUND, String.format("%s not found", userId)))
         );
+    }
+
+    /**
+     * Load UserEntity by userIdx
+     *
+     * @param userIdx
+     * @return
+     */
+    public UserEntity getUserEntityOrException(Long userIdx) {
+        return userEntityRepository.findByUserIdx(userIdx).orElseThrow(() ->
+                new ApplicationException(ErrorCode.USER_NOT_FOUND, String.format("UserIdx[%s] not found", userIdx)));
     }
 
     /**

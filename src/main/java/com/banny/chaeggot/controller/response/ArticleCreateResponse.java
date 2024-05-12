@@ -9,7 +9,7 @@ import lombok.Getter;
 public class ArticleCreateResponse {
     private Long articleIdx;
 
-    public static ArticleCreateResponse of(Article article) {
+    public static ArticleCreateResponse from(Article article) {
         return new ArticleCreateResponse(article.getArticleIdx());
     }
 }

@@ -9,7 +9,7 @@ import lombok.Getter;
 public class PostCreateResponse {
     private Long postIdx;
 
-    public static PostCreateResponse of(Post post) {
+    public static PostCreateResponse from(Post post) {
         return new PostCreateResponse(post.getPostIdx());
     }
 }

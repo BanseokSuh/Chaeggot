@@ -68,4 +68,7 @@ public class ArticleEntity {
         this.updatedAt = new Timestamp(System.currentTimeMillis());
     }
 
+    public void delete() {
+        this.deletedAt = new Timestamp(System.currentTimeMillis());
+    }
 }

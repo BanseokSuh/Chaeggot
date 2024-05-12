@@ -21,7 +21,7 @@ public class PostService {
     private final UserService userService;
 
     /**
-     * Create post
+     * Create a post
      *
      * @param title
      * @param content
@@ -35,7 +35,7 @@ public class PostService {
     }
 
     /**
-     * Modify post
+     * Modify a post
      *
      * @param title
      * @param content
@@ -56,17 +56,17 @@ public class PostService {
     }
 
     /**
-     * Delete post
+     * Delete a post
      *
      * @param userIdx
      * @param postIdx
      */
-    public void deletePost(Long userIdx, Long postIdx) {
+    public void deletePost(Long postIdx, Long userIdx) {
         UserEntity userEntity = userService.getUserEntityOrException(userIdx);
         PostEntity postEntity = getPostEntityOrException(postIdx);
 
         if (!postEntity.getUser().equals(userEntity)) {
-            throw new ApplicationException(ErrorCode.INVALID_PERMISSION, String.format("UserIdx[%s] has no permission with UserIdx[%s]", userIdx, postIdx));
+            throw new ApplicationException(ErrorCode.INVALID_PERMISSION, String.format("UserIdx[%s] has no permission with PostIdx[%s]", userIdx, postIdx));
         }
 
         postEntity.delete();
@@ -85,7 +85,7 @@ public class PostService {
     }
 
     /**
-     * Get post
+     * Get a post
      *
      * @param postIdx
      * @return
@@ -98,7 +98,7 @@ public class PostService {
     // =================================================================================================================
 
     /**
-     * Get post entity or exception
+     * Get a post entity or exception
      *
      * @param postIdx
      * @return

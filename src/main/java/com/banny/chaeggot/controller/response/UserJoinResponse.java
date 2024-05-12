@@ -13,7 +13,7 @@ public class UserJoinResponse {
     String userName;
     UserRole userRole;
 
-    public static UserJoinResponse fromUser(User user) {
+    public static UserJoinResponse from(User user) {
         return new UserJoinResponse(
                 user.getUserIdx(),
                 user.getUserId(),

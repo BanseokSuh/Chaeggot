@@ -12,7 +12,7 @@ public class UserResponse {
     private String userId;
     private UserRole userRole;
 
-    public static UserResponse fromUser(User user) {
+    public static UserResponse from(User user) {
         return new UserResponse(
                 user.getUserIdx(),
                 user.getUserId(),

@@ -23,7 +23,7 @@ public class PostController {
     private final PostService postService;
 
     /**
-     * Create post
+     * Create a post
      *
      * @param request
      * @return
@@ -37,11 +37,11 @@ public class PostController {
         // Create a post.
         Post post = postService.createPost(request.getTitle(), request.getContent(), user.getUserIdx());
 
-        return Response.success(PostCreateResponse.of(post));
+        return Response.success(PostCreateResponse.from(post));
     }
 
     /**
-     * Modify post
+     * Modify a post
      *
      * @param postIdx
      * @param request
@@ -56,7 +56,7 @@ public class PostController {
     }
 
     /**
-     * Delete post
+     * Delete a post
      *
      * @param postIdx
      * @param authentication
@@ -65,7 +65,7 @@ public class PostController {
     @DeleteMapping("/{postIdx}")
     public Response<Void> deletePost(@PathVariable(name = "postIdx") Long postIdx, Authentication authentication) {
         User user = (User) authentication.getPrincipal();
-        postService.deletePost(user.getUserIdx(), postIdx);
+        postService.deletePost(postIdx, user.getUserIdx());
         return Response.success();
     }
 
@@ -77,17 +77,17 @@ public class PostController {
      */
     @GetMapping
     public Response<Page<PostResponse>> getPosts(Pageable pageable) {
-        return Response.success(postService.getPosts(pageable).map(PostResponse::fromPost));
+        return Response.success(postService.getPosts(pageable).map(PostResponse::from));
     }
 
     /**
-     * Get post
+     * Get a post
      *
      * @param postIdx
      * @return
      */
     @GetMapping("/{postIdx}")
     public Response<PostResponse> getPost(@PathVariable(name = "postIdx") Long postIdx) {
-        return Response.success(PostResponse.fromPost(postService.getPost(postIdx)));
+        return Response.success(PostResponse.from(postService.getPost(postIdx)));
     }
 }

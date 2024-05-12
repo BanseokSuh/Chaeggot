@@ -20,12 +20,12 @@ public class PostResponse {
     private Timestamp updatedAt;
     private Timestamp deletedAt;
 
-    public static PostResponse fromPost(Post post) {
+    public static PostResponse from(Post post) {
         return new PostResponse(
                 post.getPostIdx(),
                 post.getTitle(),
                 post.getContent(),
-                UserResponse.fromUser(post.getUser()),
+                UserResponse.from(post.getUser()),
                 post.getCreatedAt(),
                 post.getUpdatedAt(),
                 post.getDeletedAt()

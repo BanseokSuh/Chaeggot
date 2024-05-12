@@ -29,7 +29,7 @@ public class PostControllerTest {
     private String secretKey;
 
     @Value("${jwt.token.access-expired-time-ms}")
-    private Long accessExpiredTimeMs;
+    private Long accessTokenExpiredTimeMs;
 
     @Autowired
     private MockMvc mockMvc;
@@ -50,7 +50,7 @@ public class PostControllerTest {
         String body = "Test_body_001";
 
         User user = userService.loadUserByUserId("admin");
-        String token = generateToken(user, secretKey, accessExpiredTimeMs);
+        String token = generateToken(user, secretKey, accessTokenExpiredTimeMs);
 
         mockMvc.perform(post("/api/v1/post")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -82,7 +82,7 @@ public class PostControllerTest {
         String body = "Modify_body_002";
 
         User user = userService.loadUserByUserId("admin");
-        String token = generateToken(user, secretKey, accessExpiredTimeMs);
+        String token = generateToken(user, secretKey, accessTokenExpiredTimeMs);
 
         mockMvc.perform(put("/api/v1/post/1")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -94,8 +94,26 @@ public class PostControllerTest {
 
     @Test
     @Transactional
+    @DisplayName("게시글 수정 실패 - 게시글 존재하지 않음")
+    public void modifyPostFailPostNotExist() throws Exception {
+        String title = "Modify_title_002";
+        String body = "Modify_body_002";
+
+        User user = userService.loadUserByUserId("admin");
+        String token = generateToken(user, secretKey, accessTokenExpiredTimeMs);
+
+        mockMvc.perform(put("/api/v1/post/10000")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + token)
+                        .content(objectMapper.writeValueAsBytes(new PostModifyRequest(title, body))))
+                .andDo(print())
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @Transactional
     @DisplayName("게시글 수정 실패 - 인증되지 않은 사용자")
-    public void modifyPostFail() throws Exception {
+    public void modifyPostFailUnauthorizedUser() throws Exception {
         String title = "Modify_title_002";
         String body = "Modify_body_002";
 
@@ -109,12 +127,12 @@ public class PostControllerTest {
     @Test
     @Transactional
     @DisplayName("게시글 수정 실패 - 다른 사용자의 게시글 수정 시도")
-    public void modifyPostFail2() throws Exception {
+    public void modifyPostFailNotPermitted() throws Exception {
         String title = "Modify_title_002";
         String body = "Modify_body_002";
 
         User user = userService.loadUserByUserId("admin");
-        String token = generateToken(user, secretKey, accessExpiredTimeMs);
+        String token = generateToken(user, secretKey, accessTokenExpiredTimeMs);
 
         mockMvc.perform(put("/api/v1/post/3")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -130,7 +148,7 @@ public class PostControllerTest {
     public void deletePost() throws Exception {
 
         User user = userService.loadUserByUserId("admin");
-        String token = generateToken(user, secretKey, accessExpiredTimeMs);
+        String token = generateToken(user, secretKey, accessTokenExpiredTimeMs);
 
         mockMvc.perform(delete("/api/v1/post/1")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -139,4 +157,42 @@ public class PostControllerTest {
                 .andExpect(status().isOk());
     }
 
+    @Test
+    @Transactional
+    @DisplayName("게시글 삭제 실패 - 게시글 존재하지 않음")
+    public void deletePostFailPostNotExist() throws Exception {
+
+        User user = userService.loadUserByUserId("admin");
+        String token = generateToken(user, secretKey, accessTokenExpiredTimeMs);
+
+        mockMvc.perform(delete("/api/v1/post/10000")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + token))
+                .andDo(print())
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @Transactional
+    @DisplayName("게시글 삭제 실패 - 인증되지 않은 사용자")
+    public void deletePostFailUnauthorizedUser() throws Exception {
+
+        mockMvc.perform(delete("/api/v1/post/1")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    @Transactional
+    @DisplayName("게시글 살제 실패 - 다른 사용자의 게시글 삭제 시도")
+    public void deletePostFailNotPermittedUser() throws Exception {
+        User user = userService.loadUserByUserId("admin");
+        String token = generateToken(user, secretKey, accessTokenExpiredTimeMs);
+
+        mockMvc.perform(delete("/api/v1/post/3")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + token))
+                .andDo(print());
+    }
 }

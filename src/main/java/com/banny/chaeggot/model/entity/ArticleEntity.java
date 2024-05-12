@@ -21,10 +21,10 @@ public class ArticleEntity {
     @Column(name = "article_idx", nullable = false)
     private Long articleIdx;
 
-    @Column(name = "title", nullable = false)
+    @Column(name = "title")
     private String title;
 
-    @Column(name = "platform", nullable = false)
+    @Column(name = "platform")
     private String platform;
 
     @Column(name = "url", nullable = false)
@@ -33,7 +33,7 @@ public class ArticleEntity {
     @Column(name = "memo", columnDefinition = "TEXT")
     private String memo;
 
-    @Column(name = "view_count", nullable = false)
+    @Column(name = "view_count")
     private int viewCount;
 
     @ManyToOne
@@ -48,6 +48,15 @@ public class ArticleEntity {
 
     @Column(name = "deleted_at")
     private Timestamp deletedAt;
+
+    public static ArticleEntity of(String title, String url, UserEntity user) {
+        ArticleEntity entity = new ArticleEntity();
+        entity.setTitle(title);
+        entity.setUrl(url);
+        entity.setUser(user);
+
+        return entity;
+    }
 
     @PrePersist
     void createdAt() {

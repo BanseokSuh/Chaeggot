@@ -8,14 +8,14 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class UserResponse {
-    private Long userIdx;
-    private String userId;
+    private Long id;
+    private String loginId;
     private UserRole userRole;
 
     public static UserResponse from(User user) {
         return new UserResponse(
-                user.getUserIdx(),
-                user.getUserId(),
+                user.getId(),
+                user.getLoginId(),
                 user.getUserRole()
         );
     }

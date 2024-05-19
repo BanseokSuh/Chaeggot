@@ -23,8 +23,8 @@ import java.util.List;
 @Data
 public class User implements UserDetails {
 
-    private Long userIdx;
-    private String userId;
+    private Long id;
+    private String loginId;
     private String userName;
     private String password;
     private UserRole userRole;
@@ -34,8 +34,8 @@ public class User implements UserDetails {
 
     public static User fromEntity(UserEntity entity) {
         User user = new User();
-        user.setUserIdx(entity.getUserIdx());
-        user.setUserId(entity.getUserId());
+        user.setId(entity.getId());
+        user.setLoginId(entity.getLoginId());
         user.setUserName(entity.getUserName());
         user.setPassword(entity.getPassword());
         user.setUserRole(entity.getUserRole());

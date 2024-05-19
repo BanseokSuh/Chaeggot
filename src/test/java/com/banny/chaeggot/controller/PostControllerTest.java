@@ -49,7 +49,7 @@ public class PostControllerTest {
         String title = "Test_title_001";
         String body = "Test_body_001";
 
-        User user = userService.loadUserByUserId("admin");
+        User user = userService.loadUserByLoginId("admin");
         String token = generateToken(user, secretKey, accessTokenExpiredTimeMs);
 
         mockMvc.perform(post("/api/v1/post")
@@ -81,7 +81,7 @@ public class PostControllerTest {
         String title = "Modify_title_002";
         String body = "Modify_body_002";
 
-        User user = userService.loadUserByUserId("admin");
+        User user = userService.loadUserByLoginId("admin");
         String token = generateToken(user, secretKey, accessTokenExpiredTimeMs);
 
         mockMvc.perform(put("/api/v1/post/1")
@@ -99,7 +99,7 @@ public class PostControllerTest {
         String title = "Modify_title_002";
         String body = "Modify_body_002";
 
-        User user = userService.loadUserByUserId("admin");
+        User user = userService.loadUserByLoginId("admin");
         String token = generateToken(user, secretKey, accessTokenExpiredTimeMs);
 
         mockMvc.perform(put("/api/v1/post/10000")
@@ -131,7 +131,7 @@ public class PostControllerTest {
         String title = "Modify_title_002";
         String body = "Modify_body_002";
 
-        User user = userService.loadUserByUserId("admin");
+        User user = userService.loadUserByLoginId("admin");
         String token = generateToken(user, secretKey, accessTokenExpiredTimeMs);
 
         mockMvc.perform(put("/api/v1/post/3")
@@ -147,7 +147,7 @@ public class PostControllerTest {
     @DisplayName("게시글 삭제")
     public void deletePost() throws Exception {
 
-        User user = userService.loadUserByUserId("admin");
+        User user = userService.loadUserByLoginId("admin");
         String token = generateToken(user, secretKey, accessTokenExpiredTimeMs);
 
         mockMvc.perform(delete("/api/v1/post/1")
@@ -162,7 +162,7 @@ public class PostControllerTest {
     @DisplayName("게시글 삭제 실패 - 게시글 존재하지 않음")
     public void deletePostFailPostNotExist() throws Exception {
 
-        User user = userService.loadUserByUserId("admin");
+        User user = userService.loadUserByLoginId("admin");
         String token = generateToken(user, secretKey, accessTokenExpiredTimeMs);
 
         mockMvc.perform(delete("/api/v1/post/10000")
@@ -187,7 +187,7 @@ public class PostControllerTest {
     @Transactional
     @DisplayName("게시글 살제 실패 - 다른 사용자의 게시글 삭제 시도")
     public void deletePostFailNotPermittedUser() throws Exception {
-        User user = userService.loadUserByUserId("admin");
+        User user = userService.loadUserByLoginId("admin");
         String token = generateToken(user, secretKey, accessTokenExpiredTimeMs);
 
         mockMvc.perform(delete("/api/v1/post/3")

@@ -10,7 +10,7 @@ import java.sql.Timestamp;
 
 @Setter
 @Getter
-@SQLDelete(sql = "UPDATE \"post\" SET deleted_at = NOW() WHERE post_idx = ?")
+@SQLDelete(sql = "UPDATE \"post\" SET deleted_at = NOW() WHERE id = ?")
 @SQLRestriction("deleted_at IS NULL")
 @Table(name = "\"post\"")
 @Entity
@@ -18,8 +18,7 @@ public class PostEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "post_idx", nullable = false)
-    private Long postIdx;
+    private Long id;
 
     @Column(name = "title", columnDefinition = "TEXT")
     private String title;
@@ -29,7 +28,7 @@ public class PostEntity {
 
     // @ManyToOne(fetch = FetchType.LAZY) // 지연 로딩
     @ManyToOne
-    @JoinColumn(name = "user_idx")
+    @JoinColumn(name = "user_id")
     private UserEntity user;
 
     @Column(name = "created_at", nullable = false)

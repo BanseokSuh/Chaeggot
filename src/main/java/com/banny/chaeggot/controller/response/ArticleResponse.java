@@ -4,19 +4,25 @@ import com.banny.chaeggot.model.Article;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.sql.Timestamp;
+
 @Getter
 @AllArgsConstructor
 public class ArticleResponse {
 
-    private Long articleIdx;
+    private Long id;
     private String title;
     private String url;
+    private Timestamp createdAt;
+    private Timestamp updatedAt;
 
     public static ArticleResponse from(Article article) {
         return new ArticleResponse(
-                article.getArticleIdx(),
+                article.getId(),
                 article.getTitle(),
-                article.getUrl()
+                article.getUrl(),
+                article.getCreatedAt(),
+                article.getUpdatedAt()
         );
     }
 }

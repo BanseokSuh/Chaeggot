@@ -23,11 +23,11 @@ public class ArticleService {
      *
      * @param title
      * @param url
-     * @param userIdx
+     * @param id
      * @return
      */
-    public Article createArticle(String title, String url, Long userIdx) {
-        UserEntity userEntity = userService.getUserEntityOrException(userIdx);
+    public Article createArticle(String title, String url, Long id) {
+        UserEntity userEntity = userService.getUserEntityOrException(id);
         ArticleEntity articleEntity = articleEntityRepository.save(ArticleEntity.of(title, url, userEntity));
         return Article.fromEntity(articleEntity);
     }
@@ -35,15 +35,15 @@ public class ArticleService {
     /**
      * Delete an article
      *
-     * @param articleIdx
-     * @param userIdx
+     * @param articleId
+     * @param userId
      */
-    public void deleteArticle(Long articleIdx, Long userIdx) {
-        UserEntity userEntity = userService.getUserEntityOrException(userIdx);
-        ArticleEntity articleEntity = getArticleEntityOrException(articleIdx);
+    public void deleteArticle(Long articleId, Long userId) {
+        UserEntity userEntity = userService.getUserEntityOrException(userId);
+        ArticleEntity articleEntity = getArticleEntityOrException(articleId);
 
         if (!articleEntity.getUser().equals(userEntity)) {
-            throw new ApplicationException(ErrorCode.INVALID_PERMISSION, String.format("UserIdx[%s] has no permission with ArticleIdx[%s]", userIdx, articleIdx));
+            throw new ApplicationException(ErrorCode.INVALID_PERMISSION, String.format("userId[%s] has no permission with articleId[%s]", userId, articleId));
         }
 
         articleEntity.delete();
@@ -61,17 +61,28 @@ public class ArticleService {
         return articleEntityRepository.findAll(pageable).map(Article::fromEntity);
     }
 
+    /**
+     * Get an article
+     *
+     * @param id
+     * @return
+     */
+    public Article getArticle(Long id) {
+        return articleEntityRepository.findById(id).map(Article::fromEntity).orElseThrow(() ->
+                new ApplicationException(ErrorCode.ARTICLE_NOT_FOUND, String.format("ArticleIdx[%s] not found", id)));
+    }
+
     // =================================================================================================================
 
     /**
      * Get an article or exception
      *
-     * @param articleIdx
+     * @param articleId
      * @return
      */
-    public ArticleEntity getArticleEntityOrException(Long articleIdx) {
-        return articleEntityRepository.findById(articleIdx).orElseThrow(() ->
-                new ApplicationException(ErrorCode.ARTICLE_NOT_FOUND, String.format("ArticleIdx[%s] not found", articleIdx)));
+    public ArticleEntity getArticleEntityOrException(Long articleId) {
+        return articleEntityRepository.findById(articleId).orElseThrow(() ->
+                new ApplicationException(ErrorCode.ARTICLE_NOT_FOUND, String.format("articleId[%s] not found", articleId)));
     }
 }
 

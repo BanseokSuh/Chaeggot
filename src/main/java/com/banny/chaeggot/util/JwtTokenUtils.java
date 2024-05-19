@@ -16,13 +16,13 @@ public class JwtTokenUtils {
      * Check if token is valid
      *
      * @param token
-     * @param userId
+     * @param loginId
      * @param key
      * @return Boolean
      */
-    public static Boolean isTokenValid(String token, String userId, String key) {
-        String userIdByToken = getUserId(token, key);
-        return userIdByToken.equals(userId) && !isTokenExpired(token, key);
+    public static Boolean isTokenValid(String token, String loginId, String key) {
+        String userIdByToken = getLoginId(token, key);
+        return userIdByToken.equals(loginId) && !isTokenExpired(token, key);
     }
 
     /**
@@ -38,15 +38,15 @@ public class JwtTokenUtils {
     }
 
     /**
-     * Get userId from token
+     * Get loginId from token
      * - parseClaimsJws() method is used to parse the token.
      *
      * @param token
      * @param key
-     * @return userId
+     * @return loginId
      */
-    public static String getUserId(String token, String key) {
-        return extractAllClaims(token, key).get("userId", String.class);
+    public static String getLoginId(String token, String key) {
+        return extractAllClaims(token, key).get("loginId", String.class);
     }
 
     /**
@@ -74,8 +74,8 @@ public class JwtTokenUtils {
      */
     public static String generateToken(User user, String key, Long expiredTimeMs) {
         Claims claims = Jwts.claims();
-        claims.put("userIdx", user.getUserIdx());
-        claims.put("userId", user.getUserId());
+        claims.put("id", user.getId());
+        claims.put("loginId", user.getLoginId());
         claims.put("userName", user.getUsername());
         claims.put("userRole", user.getUserRole());
 

@@ -34,24 +34,24 @@ public class UserService {
     /**
      * Join
      *
-     * @param userId
+     * @param loginId
      * @param userName
      * @param password
      * @return User
      */
     @Transactional
-    public User join(String userId, String userName, String password) {
+    public User join(String loginId, String userName, String password) {
 
         // Valid check for user info
-        validateUserInfo(userId, userName, password);
+        validateUserInfo(loginId, userName, password);
 
         // Check duplicated user id
-        userEntityRepository.findByUserId(userId).ifPresent(it -> {
-            throw new ApplicationException(ErrorCode.DUPLICATED_USER_ID, String.format("User ID %s is duplicated", userId));
+        userEntityRepository.findByLoginId(loginId).ifPresent(it -> {
+            throw new ApplicationException(ErrorCode.DUPLICATED_USER_ID, String.format("User ID %s is duplicated", loginId));
         });
 
         // Save user info
-        UserEntity userEntity = userEntityRepository.save(UserEntity.of(userId, userName, encoder.encode(password)));
+        UserEntity userEntity = userEntityRepository.save(UserEntity.of(loginId, userName, encoder.encode(password)));
 
         return User.fromEntity(userEntity);
     }
@@ -59,14 +59,14 @@ public class UserService {
     /**
      * Login
      *
-     * @param userId
+     * @param loginId
      * @param password
      * @return token
      */
-    public String login(String userId, String password) {
+    public String login(String loginId, String password) {
 
         // Get user info
-        User user = loadUserByUserId(userId);
+        User user = loadUserByLoginId(loginId);
 
         // Check password if it is correct
         if (!encoder.matches(password, user.getPassword())) {
@@ -85,47 +85,47 @@ public class UserService {
     // =================================================================================================================
 
     /**
-     * Load user by userId.
+     * Load user by loginId.
      * - Get user from cache first.
      * - If not exist, get user from DB using .orElseGet() method.
      * - If not exist, throw exception.
      *
-     * @param userId
+     * @param loginId
      * @return User
      */
-    public User loadUserByUserId(String userId) {
-        return userCacheRepository.getUser(userId).orElseGet(() ->
-                userEntityRepository.findByUserId(userId).map(User::fromEntity).orElseThrow(() ->
-                        new ApplicationException(ErrorCode.USER_NOT_FOUND, String.format("%s not found", userId)))
+    public User loadUserByLoginId(String loginId) {
+        return userCacheRepository.getUser(loginId).orElseGet(() ->
+                userEntityRepository.findByLoginId(loginId).map(User::fromEntity).orElseThrow(() ->
+                        new ApplicationException(ErrorCode.USER_NOT_FOUND, String.format("%s not found", loginId)))
         );
     }
 
     /**
-     * Load UserEntity by userIdx
+     * Load UserEntity by id
      *
-     * @param userIdx
+     * @param id
      * @return
      */
-    public UserEntity getUserEntityOrException(Long userIdx) {
-        return userEntityRepository.findByUserIdx(userIdx).orElseThrow(() ->
-                new ApplicationException(ErrorCode.USER_NOT_FOUND, String.format("UserIdx[%s] not found", userIdx)));
+    public UserEntity getUserEntityOrException(Long id) {
+        return userEntityRepository.findById(id).orElseThrow(() ->
+                new ApplicationException(ErrorCode.USER_NOT_FOUND, String.format("UserIdx[%s] not found", id)));
     }
 
     /**
      * Valid check for user info
      * todo: Move this method to a separate class
      *
-     * @param userId
+     * @param loginId
      * @param userName
      * @param password
      */
-    private void validateUserInfo(String userId, String userName, String password) {
-        if (StringUtils.isBlank(userId)) {
-            throw new ApplicationException(ErrorCode.EMPTY_USER_ID, String.format("User ID %s should not be empty", userId));
+    private void validateUserInfo(String loginId, String userName, String password) {
+        if (StringUtils.isBlank(loginId)) {
+            throw new ApplicationException(ErrorCode.EMPTY_USER_ID, String.format("User ID %s should not be empty", loginId));
         }
 
-        if (userId.length() < 5) {
-            throw new ApplicationException(ErrorCode.INVALID_USER_ID, String.format("User ID %s is too short", userId));
+        if (loginId.length() < 5) {
+            throw new ApplicationException(ErrorCode.INVALID_USER_ID, String.format("User ID %s is too short", loginId));
         }
 
         if (StringUtils.isBlank(userName)) {

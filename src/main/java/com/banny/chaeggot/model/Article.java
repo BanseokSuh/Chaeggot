@@ -11,7 +11,7 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Article {
-    private Long articleIdx;
+    private Long id;
     private String title;
     private String platform;
     private String url;
@@ -24,7 +24,7 @@ public class Article {
 
     public static Article fromEntity(ArticleEntity entity) {
         Article article = new Article();
-        article.setArticleIdx(entity.getArticleIdx());
+        article.setId(entity.getId());
         article.setTitle(entity.getTitle());
         article.setPlatform(entity.getPlatform());
         article.setUrl(entity.getUrl());

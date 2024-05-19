@@ -7,9 +7,9 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class ArticleCreateResponse {
-    private Long articleIdx;
+    private Long id;
 
     public static ArticleCreateResponse from(Article article) {
-        return new ArticleCreateResponse(article.getArticleIdx());
+        return new ArticleCreateResponse(article.getId());
     }
 }

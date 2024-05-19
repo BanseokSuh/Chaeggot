@@ -12,23 +12,21 @@ import java.sql.Timestamp;
 @Getter
 @AllArgsConstructor
 public class PostResponse {
-    private Long postIdx;
+    private Long id;
     private String title;
     private String content;
     private UserResponse user;
     private Timestamp createdAt;
     private Timestamp updatedAt;
-    private Timestamp deletedAt;
 
     public static PostResponse from(Post post) {
         return new PostResponse(
-                post.getPostIdx(),
+                post.getId(),
                 post.getTitle(),
                 post.getContent(),
                 UserResponse.from(post.getUser()),
                 post.getCreatedAt(),
-                post.getUpdatedAt(),
-                post.getDeletedAt()
+                post.getUpdatedAt()
         );
     }
 }

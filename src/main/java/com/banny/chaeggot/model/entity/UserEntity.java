@@ -12,10 +12,10 @@ import java.time.Instant;
 
 @Setter
 @Getter
-@SQLDelete(sql = "UPDATE \"user\" SET deleted_at = NOW() WHERE user_idx = ?")
+@SQLDelete(sql = "UPDATE \"user\" SET deleted_at = NOW() WHERE user_id = ?")
 @SQLRestriction("deleted_at IS NULL")
 @Table(name = "\"user\"", uniqueConstraints = {
-        @UniqueConstraint(name = "UNIQUE_USER_ID", columnNames = "user_id"),
+        @UniqueConstraint(name = "UNIQUE_USER_ID", columnNames = "login_id"),
         @UniqueConstraint(name = "UNIQUE_EMAIL", columnNames = "email")
 })
 @Entity
@@ -23,11 +23,10 @@ public class UserEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_idx", nullable = false)
-    private Long userIdx;
+    private Long id;
 
-    @Column(name = "user_id", nullable = false)
-    private String userId;
+    @Column(name = "login_id", nullable = false)
+    private String loginId;
 
     @Column(name = "user_name", nullable = false)
     private String userName;
@@ -51,6 +50,15 @@ public class UserEntity {
     @Column(name = "deleted_at")
     private Timestamp deletedAt;
 
+    public static UserEntity of(String loginId, String userName, String password) {
+        UserEntity userEntity = new UserEntity();
+        userEntity.setLoginId(loginId);
+        userEntity.setUserName(userName);
+        userEntity.setPassword(password);
+
+        return userEntity;
+    }
+
     @PrePersist
     void createdAt() {
         this.createdAt = Timestamp.from(Instant.now());
@@ -59,14 +67,5 @@ public class UserEntity {
     @PreUpdate
     void updatedAt() {
         this.updatedAt = Timestamp.from(Instant.now());
-    }
-
-    public static UserEntity of(String userId, String userName, String password) {
-        UserEntity userEntity = new UserEntity();
-        userEntity.setUserId(userId);
-        userEntity.setUserName(userName);
-        userEntity.setPassword(password);
-
-        return userEntity;
     }
 }

@@ -27,8 +27,8 @@ public class PostService {
      * @param content
      * @return
      */
-    public Post createPost(String title, String content, Long userIdx) {
-        UserEntity userEntity = userService.getUserEntityOrException(userIdx);
+    public Post createPost(String title, String content, Long id) {
+        UserEntity userEntity = userService.getUserEntityOrException(id);
 
         PostEntity postEntity = postEntityRepository.save(PostEntity.of(title, content, userEntity));
         return Post.fromEntity(postEntity);
@@ -39,15 +39,15 @@ public class PostService {
      *
      * @param title
      * @param content
-     * @param userIdx
-     * @param postIdx
+     * @param userId
+     * @param postId
      */
-    public void modifyPost(String title, String content, Long userIdx, Long postIdx) {
-        UserEntity userEntity = userService.getUserEntityOrException(userIdx);
-        PostEntity postEntity = getPostEntityOrException(postIdx);
+    public void modifyPost(String title, String content, Long userId, Long postId) {
+        UserEntity userEntity = userService.getUserEntityOrException(userId);
+        PostEntity postEntity = getPostEntityOrException(postId);
 
         if (!postEntity.getUser().equals(userEntity)) {
-            throw new ApplicationException(ErrorCode.INVALID_PERMISSION, String.format("UserIdx[%s] has no permission with UserIdx[%s]", userIdx, postIdx));
+            throw new ApplicationException(ErrorCode.INVALID_PERMISSION, String.format("userId[%s] has no permission with postId[%s]", userId, postId));
         }
 
         postEntity.modify(title, content);
@@ -58,15 +58,15 @@ public class PostService {
     /**
      * Delete a post
      *
-     * @param userIdx
-     * @param postIdx
+     * @param postId
+     * @param userId
      */
-    public void deletePost(Long postIdx, Long userIdx) {
-        UserEntity userEntity = userService.getUserEntityOrException(userIdx);
-        PostEntity postEntity = getPostEntityOrException(postIdx);
+    public void deletePost(Long postId, Long userId) {
+        UserEntity userEntity = userService.getUserEntityOrException(userId);
+        PostEntity postEntity = getPostEntityOrException(postId);
 
         if (!postEntity.getUser().equals(userEntity)) {
-            throw new ApplicationException(ErrorCode.INVALID_PERMISSION, String.format("UserIdx[%s] has no permission with PostIdx[%s]", userIdx, postIdx));
+            throw new ApplicationException(ErrorCode.INVALID_PERMISSION, String.format("userId[%s] has no permission with postId[%s]", userId, postId));
         }
 
         postEntity.delete();
@@ -87,12 +87,12 @@ public class PostService {
     /**
      * Get a post
      *
-     * @param postIdx
+     * @param id
      * @return
      */
-    public Post getPost(Long postIdx) {
-        return postEntityRepository.findById(postIdx).map(Post::fromEntity).orElseThrow(() ->
-                new ApplicationException(ErrorCode.POST_NOT_FOUND, String.format("PostIdx[%s] not found", postIdx)));
+    public Post getPost(Long id) {
+        return postEntityRepository.findById(id).map(Post::fromEntity).orElseThrow(() ->
+                new ApplicationException(ErrorCode.POST_NOT_FOUND, String.format("PostIdx[%s] not found", id)));
     }
 
     // =================================================================================================================
@@ -100,11 +100,11 @@ public class PostService {
     /**
      * Get a post entity or exception
      *
-     * @param postIdx
+     * @param id
      * @return
      */
-    private PostEntity getPostEntityOrException(Long postIdx) {
-        return postEntityRepository.findById(postIdx).orElseThrow(() ->
-                new ApplicationException(ErrorCode.POST_NOT_FOUND, String.format("PostIdx[%s] not found", postIdx)));
+    private PostEntity getPostEntityOrException(Long id) {
+        return postEntityRepository.findById(id).orElseThrow(() ->
+                new ApplicationException(ErrorCode.POST_NOT_FOUND, String.format("PostIdx[%s] not found", id)));
     }
 }

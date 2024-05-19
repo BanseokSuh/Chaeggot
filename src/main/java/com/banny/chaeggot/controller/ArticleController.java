@@ -32,21 +32,21 @@ public class ArticleController {
     @PostMapping
     public Response<ArticleCreateResponse> createArticle(@RequestBody ArticleCreateRequest request, Authentication authentication) {
         User user = (User) authentication.getPrincipal();
-        Article article = articleService.createArticle(request.getTitle(), request.getUrl(), user.getUserIdx());
+        Article article = articleService.createArticle(request.getTitle(), request.getUrl(), user.getId());
         return Response.success(ArticleCreateResponse.from(article));
     }
 
     /**
      * Delete an article
      *
-     * @param articleIdx
+     * @param articleId
      * @param authentication
      * @return
      */
-    @DeleteMapping("/{articleIdx}")
-    public Response<Void> deleteArticle(@PathVariable(name = "articleIdx") Long articleIdx, Authentication authentication) {
+    @DeleteMapping("/{articleId}")
+    public Response<Void> deleteArticle(@PathVariable(name = "articleId") Long articleId, Authentication authentication) {
         User user = (User) authentication.getPrincipal();
-        articleService.deleteArticle(articleIdx, user.getUserIdx());
+        articleService.deleteArticle(articleId, user.getId());
         return Response.success();
     }
 
@@ -59,6 +59,17 @@ public class ArticleController {
     @GetMapping
     public Response<Page<ArticleResponse>> getArticles(Pageable pageable) {
         return Response.success(articleService.getArticles(pageable).map(ArticleResponse::from));
+    }
+
+    /**
+     * Get an article
+     *
+     * @param articleId
+     * @return
+     */
+    @GetMapping("/{articleId}")
+    public Response<ArticleResponse> getArticle(@PathVariable(name = "articleId") Long articleId) {
+        return Response.success(ArticleResponse.from(articleService.getArticle(articleId)));
     }
 
 }

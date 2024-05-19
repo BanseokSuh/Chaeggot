@@ -8,15 +8,15 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class UserJoinResponse {
-    Long userIdx;
-    String userId;
+    Long id;
+    String loginId;
     String userName;
     UserRole userRole;
 
     public static UserJoinResponse from(User user) {
         return new UserJoinResponse(
-                user.getUserIdx(),
-                user.getUserId(),
+                user.getId(),
+                user.getLoginId(),
                 user.getUsername(),
                 user.getUserRole()
         );

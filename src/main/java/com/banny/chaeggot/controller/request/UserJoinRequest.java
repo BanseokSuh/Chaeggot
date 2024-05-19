@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserJoinRequest {
-    private String userId;
+    private String loginId;
     private String userName;
     private String password;
 }

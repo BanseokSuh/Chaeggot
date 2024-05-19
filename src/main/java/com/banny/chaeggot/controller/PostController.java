@@ -35,7 +35,7 @@ public class PostController {
         User user = (User) authentication.getPrincipal();
 
         // Create a post.
-        Post post = postService.createPost(request.getTitle(), request.getContent(), user.getUserIdx());
+        Post post = postService.createPost(request.getTitle(), request.getContent(), user.getId());
 
         return Response.success(PostCreateResponse.from(post));
     }
@@ -43,29 +43,29 @@ public class PostController {
     /**
      * Modify a post
      *
-     * @param postIdx
+     * @param id
      * @param request
      * @param authentication
      * @return
      */
-    @PutMapping("/{postIdx}")
-    public Response<Void> modifyPost(@PathVariable(name = "postIdx") Long postIdx, @RequestBody PostModifyRequest request, Authentication authentication) {
+    @PutMapping("/{postId}")
+    public Response<Void> modifyPost(@PathVariable(name = "postId") Long postId, @RequestBody PostModifyRequest request, Authentication authentication) {
         User user = (User) authentication.getPrincipal();
-        postService.modifyPost(request.getTitle(), request.getContent(), user.getUserIdx(), postIdx);
+        postService.modifyPost(request.getTitle(), request.getContent(), user.getId(), postId);
         return Response.success();
     }
 
     /**
      * Delete a post
      *
-     * @param postIdx
+     * @param id
      * @param authentication
      * @return
      */
-    @DeleteMapping("/{postIdx}")
-    public Response<Void> deletePost(@PathVariable(name = "postIdx") Long postIdx, Authentication authentication) {
+    @DeleteMapping("/{postId}")
+    public Response<Void> deletePost(@PathVariable(name = "postId") Long postId, Authentication authentication) {
         User user = (User) authentication.getPrincipal();
-        postService.deletePost(postIdx, user.getUserIdx());
+        postService.deletePost(postId, user.getId());
         return Response.success();
     }
 
@@ -83,11 +83,11 @@ public class PostController {
     /**
      * Get a post
      *
-     * @param postIdx
+     * @param id
      * @return
      */
-    @GetMapping("/{postIdx}")
-    public Response<PostResponse> getPost(@PathVariable(name = "postIdx") Long postIdx) {
-        return Response.success(PostResponse.from(postService.getPost(postIdx)));
+    @GetMapping("/{id}")
+    public Response<PostResponse> getPost(@PathVariable(name = "id") Long id) {
+        return Response.success(PostResponse.from(postService.getPost(id)));
     }
 }

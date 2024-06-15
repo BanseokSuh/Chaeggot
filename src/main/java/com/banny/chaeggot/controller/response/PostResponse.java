@@ -1,12 +1,9 @@
 package com.banny.chaeggot.controller.response;
 
-import com.banny.chaeggot.model.Post;
-import com.banny.chaeggot.model.User;
-import com.banny.chaeggot.model.entity.PostEntity;
+import com.banny.chaeggot.entity.Post;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import java.sql.Time;
 import java.sql.Timestamp;
 
 @Getter

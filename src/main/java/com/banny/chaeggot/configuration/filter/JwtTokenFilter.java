@@ -1,6 +1,6 @@
 package com.banny.chaeggot.configuration.filter;
 
-import com.banny.chaeggot.model.User;
+import com.banny.chaeggot.entity.User;
 import com.banny.chaeggot.service.UserService;
 import com.banny.chaeggot.util.JwtTokenUtils;
 import jakarta.servlet.FilterChain;

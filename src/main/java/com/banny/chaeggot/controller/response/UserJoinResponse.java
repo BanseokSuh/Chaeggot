@@ -1,17 +1,17 @@
 package com.banny.chaeggot.controller.response;
 
-import com.banny.chaeggot.model.User;
-import com.banny.chaeggot.model.UserRole;
+import com.banny.chaeggot.entity.User;
+import com.banny.chaeggot.enums.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
 public class UserJoinResponse {
-    Long id;
-    String loginId;
-    String userName;
-    UserRole userRole;
+    private Long id;
+    private String loginId;
+    private String userName;
+    private UserRole userRole;
 
     public static UserJoinResponse from(User user) {
         return new UserJoinResponse(

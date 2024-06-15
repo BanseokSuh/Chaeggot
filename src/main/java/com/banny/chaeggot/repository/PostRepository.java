@@ -1,9 +1,9 @@
 package com.banny.chaeggot.repository;
 
-import com.banny.chaeggot.model.entity.PostEntity;
+import com.banny.chaeggot.entity.Post;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface PostEntityRepository extends JpaRepository<PostEntity, Long> {
+public interface PostRepository extends JpaRepository<Post, Long> {
 }

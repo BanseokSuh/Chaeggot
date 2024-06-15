@@ -4,16 +4,14 @@ import com.banny.chaeggot.controller.request.ArticleCreateRequest;
 import com.banny.chaeggot.controller.response.ArticleCreateResponse;
 import com.banny.chaeggot.controller.response.ArticleResponse;
 import com.banny.chaeggot.controller.response.Response;
-import com.banny.chaeggot.model.Article;
-import com.banny.chaeggot.model.User;
+import com.banny.chaeggot.entity.Article;
+import com.banny.chaeggot.entity.User;
 import com.banny.chaeggot.service.ArticleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/article")

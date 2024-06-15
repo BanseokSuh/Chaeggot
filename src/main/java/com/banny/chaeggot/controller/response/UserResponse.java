@@ -1,7 +1,7 @@
 package com.banny.chaeggot.controller.response;
 
-import com.banny.chaeggot.model.User;
-import com.banny.chaeggot.model.UserRole;
+import com.banny.chaeggot.entity.User;
+import com.banny.chaeggot.enums.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

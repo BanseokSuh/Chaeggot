@@ -2,7 +2,7 @@ package com.banny.chaeggot.controller;
 
 import com.banny.chaeggot.controller.request.PostCreateRequest;
 import com.banny.chaeggot.controller.request.PostModifyRequest;
-import com.banny.chaeggot.model.User;
+import com.banny.chaeggot.entity.User;
 import com.banny.chaeggot.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static com.banny.chaeggot.util.JwtTokenUtils.generateToken;

@@ -1,13 +1,13 @@
 package com.banny.chaeggot.repository;
 
-import com.banny.chaeggot.model.entity.UserEntity;
+import com.banny.chaeggot.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 @Repository
-public interface UserEntityRepository extends JpaRepository<UserEntity, Long> {
+public interface UserRepository extends JpaRepository<User, Long> {
 
-    Optional<UserEntity> findByLoginId(String loginId);
+    Optional<User> findByLoginId(String loginId);
 }

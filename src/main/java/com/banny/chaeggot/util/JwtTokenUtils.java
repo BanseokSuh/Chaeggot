@@ -1,6 +1,6 @@
 package com.banny.chaeggot.util;
 
-import com.banny.chaeggot.model.User;
+import com.banny.chaeggot.entity.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -74,7 +74,7 @@ public class JwtTokenUtils {
      */
     public static String generateToken(User user, String key, Long expiredTimeMs) {
         Claims claims = Jwts.claims();
-        claims.put("id", user.getId());
+        claims.put("userId", user.getId());
         claims.put("loginId", user.getLoginId());
         claims.put("userName", user.getUsername());
         claims.put("userRole", user.getUserRole());

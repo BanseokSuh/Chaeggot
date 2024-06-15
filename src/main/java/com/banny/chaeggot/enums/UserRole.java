@@ -1,4 +1,4 @@
-package com.banny.chaeggot.model;
+package com.banny.chaeggot.enums;
 
 public enum UserRole {
 

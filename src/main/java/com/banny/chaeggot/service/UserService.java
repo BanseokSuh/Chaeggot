@@ -2,10 +2,9 @@ package com.banny.chaeggot.service;
 
 import com.banny.chaeggot.exception.ApplicationException;
 import com.banny.chaeggot.exception.ErrorCode;
-import com.banny.chaeggot.model.User;
-import com.banny.chaeggot.model.entity.UserEntity;
+import com.banny.chaeggot.entity.User;
 import com.banny.chaeggot.repository.UserCacheRepository;
-import com.banny.chaeggot.repository.UserEntityRepository;
+import com.banny.chaeggot.repository.UserRepository;
 import com.banny.chaeggot.util.JwtTokenUtils;
 import io.micrometer.common.util.StringUtils;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +20,7 @@ import java.util.regex.Pattern;
 @Service
 public class UserService {
 
-    private final UserEntityRepository userEntityRepository;
+    private final UserRepository userRepository;
     private final UserCacheRepository userCacheRepository;
     private final BCryptPasswordEncoder encoder;
 
@@ -46,14 +45,12 @@ public class UserService {
         validateUserInfo(loginId, userName, password);
 
         // Check duplicated user id
-        userEntityRepository.findByLoginId(loginId).ifPresent(it -> {
-            throw new ApplicationException(ErrorCode.DUPLICATED_USER_ID, String.format("User ID %s is duplicated", loginId));
+        userRepository.findByLoginId(loginId).ifPresent(it -> {
+            throw new ApplicationException(ErrorCode.DUPLICATED_LOGIN_ID, String.format("LoginId %s is duplicated", loginId));
         });
 
         // Save user info
-        UserEntity userEntity = userEntityRepository.save(UserEntity.of(loginId, userName, encoder.encode(password)));
-
-        return User.fromEntity(userEntity);
+        return userRepository.save(User.of(loginId, userName, encoder.encode(password)));
     }
 
     /**
@@ -95,7 +92,7 @@ public class UserService {
      */
     public User loadUserByLoginId(String loginId) {
         return userCacheRepository.getUser(loginId).orElseGet(() ->
-                userEntityRepository.findByLoginId(loginId).map(User::fromEntity).orElseThrow(() ->
+                userRepository.findByLoginId(loginId).orElseThrow(() ->
                         new ApplicationException(ErrorCode.USER_NOT_FOUND, String.format("%s not found", loginId)))
         );
     }
@@ -103,12 +100,12 @@ public class UserService {
     /**
      * Load UserEntity by id
      *
-     * @param id
+     * @param userId
      * @return
      */
-    public UserEntity getUserEntityOrException(Long id) {
-        return userEntityRepository.findById(id).orElseThrow(() ->
-                new ApplicationException(ErrorCode.USER_NOT_FOUND, String.format("UserIdx[%s] not found", id)));
+    public User getUserEntityOrException(Long userId) {
+        return userRepository.findById(userId).orElseThrow(() ->
+                new ApplicationException(ErrorCode.USER_NOT_FOUND, String.format("UserId[%s] not found", userId)));
     }
 
     /**
@@ -121,15 +118,15 @@ public class UserService {
      */
     private void validateUserInfo(String loginId, String userName, String password) {
         if (StringUtils.isBlank(loginId)) {
-            throw new ApplicationException(ErrorCode.EMPTY_USER_ID, String.format("User ID %s should not be empty", loginId));
+            throw new ApplicationException(ErrorCode.EMPTY_USER_ID, String.format("LoginId[%s] should not be empty", loginId));
         }
 
         if (loginId.length() < 5) {
-            throw new ApplicationException(ErrorCode.INVALID_USER_ID, String.format("User ID %s is too short", loginId));
+            throw new ApplicationException(ErrorCode.INVALID_USER_ID, String.format("LoginId[%s] is too short", loginId));
         }
 
         if (StringUtils.isBlank(userName)) {
-            throw new ApplicationException(ErrorCode.EMPTY_USER_NAME, String.format("Username %s should not be empty", userName));
+            throw new ApplicationException(ErrorCode.EMPTY_USER_NAME, String.format("UserName[%s] should not be empty", userName));
         }
 
         if (StringUtils.isBlank(password)) {
@@ -143,7 +140,7 @@ public class UserService {
         Pattern pattern = Pattern.compile("[^a-z0-9 ]", Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(password);
         if (!matcher.find()) {
-            throw new ApplicationException(ErrorCode.INVALID_PASSWORD, String.format("Password %s should include at least 1 special symbol", password));
+            throw new ApplicationException(ErrorCode.INVALID_PASSWORD, String.format("Password[%s] should include at least 1 special symbol", password));
         }
     }
 }

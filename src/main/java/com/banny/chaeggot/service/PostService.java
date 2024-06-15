@@ -1,13 +1,10 @@
 package com.banny.chaeggot.service;
 
-import com.banny.chaeggot.controller.response.PostResponse;
 import com.banny.chaeggot.exception.ApplicationException;
 import com.banny.chaeggot.exception.ErrorCode;
-import com.banny.chaeggot.model.Post;
-import com.banny.chaeggot.model.entity.PostEntity;
-import com.banny.chaeggot.model.entity.UserEntity;
-import com.banny.chaeggot.repository.PostEntityRepository;
-import com.banny.chaeggot.repository.UserEntityRepository;
+import com.banny.chaeggot.entity.Post;
+import com.banny.chaeggot.entity.User;
+import com.banny.chaeggot.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,7 +14,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class PostService {
 
-    private final PostEntityRepository postEntityRepository;
+    private final PostRepository postRepository;
     private final UserService userService;
 
     /**
@@ -25,13 +22,13 @@ public class PostService {
      *
      * @param title
      * @param content
+     * @param userId
      * @return
      */
-    public Post createPost(String title, String content, Long id) {
-        UserEntity userEntity = userService.getUserEntityOrException(id);
+    public Post createPost(String title, String content, Long userId) {
+        User user = userService.getUserEntityOrException(userId);
 
-        PostEntity postEntity = postEntityRepository.save(PostEntity.of(title, content, userEntity));
-        return Post.fromEntity(postEntity);
+        return postRepository.save(Post.of(title, content, user));
     }
 
     /**
@@ -43,16 +40,16 @@ public class PostService {
      * @param postId
      */
     public void modifyPost(String title, String content, Long userId, Long postId) {
-        UserEntity userEntity = userService.getUserEntityOrException(userId);
-        PostEntity postEntity = getPostEntityOrException(postId);
+        User user = userService.getUserEntityOrException(userId);
+        Post post = getPostEntityOrException(postId);
 
-        if (!postEntity.getUser().equals(userEntity)) {
+        if (!post.getUser().equals(user)) {
             throw new ApplicationException(ErrorCode.INVALID_PERMISSION, String.format("userId[%s] has no permission with postId[%s]", userId, postId));
         }
 
-        postEntity.modify(title, content);
+        post.modify(title, content);
 
-        postEntityRepository.saveAndFlush(postEntity);
+        postRepository.saveAndFlush(post);
     }
 
     /**
@@ -62,16 +59,16 @@ public class PostService {
      * @param userId
      */
     public void deletePost(Long postId, Long userId) {
-        UserEntity userEntity = userService.getUserEntityOrException(userId);
-        PostEntity postEntity = getPostEntityOrException(postId);
+        User user = userService.getUserEntityOrException(userId);
+        Post post = getPostEntityOrException(postId);
 
-        if (!postEntity.getUser().equals(userEntity)) {
+        if (!post.getUser().equals(user)) {
             throw new ApplicationException(ErrorCode.INVALID_PERMISSION, String.format("userId[%s] has no permission with postId[%s]", userId, postId));
         }
 
-        postEntity.delete();
+        post.delete();
 
-        postEntityRepository.saveAndFlush(postEntity);
+        postRepository.saveAndFlush(post);
     }
 
     /**
@@ -81,18 +78,18 @@ public class PostService {
      * @return
      */
     public Page<Post> getPosts(Pageable pageable) {
-        return postEntityRepository.findAll(pageable).map(Post::fromEntity);
+        return postRepository.findAll(pageable);
     }
 
     /**
      * Get a post
      *
-     * @param id
+     * @param postId
      * @return
      */
-    public Post getPost(Long id) {
-        return postEntityRepository.findById(id).map(Post::fromEntity).orElseThrow(() ->
-                new ApplicationException(ErrorCode.POST_NOT_FOUND, String.format("PostIdx[%s] not found", id)));
+    public Post getPost(Long postId) {
+        return postRepository.findById(postId).orElseThrow(() ->
+                new ApplicationException(ErrorCode.POST_NOT_FOUND, String.format("PostId[%s] not found", postId)));
     }
 
     // =================================================================================================================
@@ -100,11 +97,11 @@ public class PostService {
     /**
      * Get a post entity or exception
      *
-     * @param id
+     * @param postId
      * @return
      */
-    private PostEntity getPostEntityOrException(Long id) {
-        return postEntityRepository.findById(id).orElseThrow(() ->
-                new ApplicationException(ErrorCode.POST_NOT_FOUND, String.format("PostIdx[%s] not found", id)));
+    private Post getPostEntityOrException(Long postId) {
+        return postRepository.findById(postId).orElseThrow(() ->
+                new ApplicationException(ErrorCode.POST_NOT_FOUND, String.format("PostId[%s] not found", postId)));
     }
 }

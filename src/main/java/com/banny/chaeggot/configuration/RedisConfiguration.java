@@ -1,6 +1,6 @@
 package com.banny.chaeggot.configuration;
 
-import com.banny.chaeggot.model.User;
+import com.banny.chaeggot.entity.User;
 import io.lettuce.core.RedisURI;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
@@ -22,6 +22,7 @@ public class RedisConfiguration {
 
     /**
      * Create a connection factory using the RedisProperties.
+     *
      * @return
      */
     @Bean
@@ -36,6 +37,7 @@ public class RedisConfiguration {
 
     /**
      * Create a RedisTemplate for User.
+     *
      * @param redisConnectionFactory
      * @return
      */

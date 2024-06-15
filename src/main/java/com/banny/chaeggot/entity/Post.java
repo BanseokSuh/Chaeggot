@@ -1,4 +1,4 @@
-package com.banny.chaeggot.model.entity;
+package com.banny.chaeggot.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -10,34 +10,26 @@ import java.sql.Timestamp;
 
 @Setter
 @Getter
-@SQLDelete(sql = "UPDATE \"article\" SET deleted_at = NOW() WHERE id = ?")
+@SQLDelete(sql = "UPDATE \"post\" SET deleted_at = NOW() WHERE id = ?")
 @SQLRestriction("deleted_at IS NULL")
-@Table(name = "\"article\"")
+@Table(name = "\"post\"")
 @Entity
-public class ArticleEntity {
+public class Post {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "title")
+    @Column(name = "title", columnDefinition = "TEXT")
     private String title;
 
-    @Column(name = "platform")
-    private String platform;
+    @Column(name = "content")
+    private String content;
 
-    @Column(name = "url", nullable = false)
-    private String url;
-
-    @Column(name = "memo", columnDefinition = "TEXT")
-    private String memo;
-
-    @Column(name = "view_count")
-    private int viewCount;
-
+    // @ManyToOne(fetch = FetchType.LAZY) // 지연 로딩
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private UserEntity user;
+    private User user;
 
     @Column(name = "created_at", nullable = false)
     private Timestamp createdAt;
@@ -48,13 +40,13 @@ public class ArticleEntity {
     @Column(name = "deleted_at")
     private Timestamp deletedAt;
 
-    public static ArticleEntity of(String title, String url, UserEntity user) {
-        ArticleEntity entity = new ArticleEntity();
-        entity.setTitle(title);
-        entity.setUrl(url);
-        entity.setUser(user);
+    public static Post of(String title, String content, User user) {
+        Post post = new Post();
+        post.setTitle(title);
+        post.setContent(content);
+        post.setUser(user);
 
-        return entity;
+        return post;
     }
 
     @PrePersist
@@ -65,6 +57,11 @@ public class ArticleEntity {
     @PreUpdate
     void updatedAt() {
         this.updatedAt = new Timestamp(System.currentTimeMillis());
+    }
+
+    public void modify(String title, String content) {
+        this.title = title;
+        this.content = content;
     }
 
     public void delete() {

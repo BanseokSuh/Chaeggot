@@ -1,6 +1,6 @@
 package com.banny.chaeggot.repository;
 
-import com.banny.chaeggot.model.User;
+import com.banny.chaeggot.entity.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -14,8 +14,8 @@ import java.util.Optional;
 @Repository
 public class UserCacheRepository {
 
-    private final RedisTemplate<String, User> redisTemplate;
     private final static Duration USER_CACHE_TTL = Duration.ofDays(3); // 3 days
+    private final RedisTemplate<String, User> redisTemplate;
 
     /**
      * Set User into Redis

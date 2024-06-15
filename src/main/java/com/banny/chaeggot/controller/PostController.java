@@ -5,10 +5,9 @@ import com.banny.chaeggot.controller.request.PostModifyRequest;
 import com.banny.chaeggot.controller.response.PostCreateResponse;
 import com.banny.chaeggot.controller.response.PostResponse;
 import com.banny.chaeggot.controller.response.Response;
-import com.banny.chaeggot.model.Post;
-import com.banny.chaeggot.model.User;
+import com.banny.chaeggot.entity.Post;
+import com.banny.chaeggot.entity.User;
 import com.banny.chaeggot.service.PostService;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -43,7 +42,7 @@ public class PostController {
     /**
      * Modify a post
      *
-     * @param id
+     * @param postId
      * @param request
      * @param authentication
      * @return
@@ -58,7 +57,7 @@ public class PostController {
     /**
      * Delete a post
      *
-     * @param id
+     * @param postId
      * @param authentication
      * @return
      */

@@ -1,6 +1,6 @@
 package com.banny.chaeggot.controller.response;
 
-import com.banny.chaeggot.model.Post;
+import com.banny.chaeggot.entity.Post;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

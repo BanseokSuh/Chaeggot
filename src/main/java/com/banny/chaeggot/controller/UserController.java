@@ -5,7 +5,7 @@ import com.banny.chaeggot.controller.request.UserLoginRequest;
 import com.banny.chaeggot.controller.response.Response;
 import com.banny.chaeggot.controller.response.UserJoinResponse;
 import com.banny.chaeggot.controller.response.UserLoginResponse;
-import com.banny.chaeggot.model.User;
+import com.banny.chaeggot.entity.User;
 import com.banny.chaeggot.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;

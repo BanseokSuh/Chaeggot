@@ -46,7 +46,7 @@ public class UserService {
 
         // Check duplicated user id
         userRepository.findByLoginId(loginId).ifPresent(it -> {
-            throw new ApplicationException(ErrorCode.DUPLICATED_LOGIN_ID, String.format("LoginId %s is duplicated", loginId));
+            throw new ApplicationException(ErrorCode.DUPLICATED_LOGIN_ID, String.format("LoginId[%s] is duplicated", loginId));
         });
 
         // Save user info
@@ -93,7 +93,7 @@ public class UserService {
     public User loadUserByLoginId(String loginId) {
         return userCacheRepository.getUser(loginId).orElseGet(() ->
                 userRepository.findByLoginId(loginId).orElseThrow(() ->
-                        new ApplicationException(ErrorCode.USER_NOT_FOUND, String.format("%s not found", loginId)))
+                        new ApplicationException(ErrorCode.USER_NOT_FOUND, String.format("loginId[%s] not found", loginId)))
         );
     }
 
@@ -118,11 +118,11 @@ public class UserService {
      */
     private void validateUserInfo(String loginId, String userName, String password) {
         if (StringUtils.isBlank(loginId)) {
-            throw new ApplicationException(ErrorCode.EMPTY_USER_ID, String.format("LoginId[%s] should not be empty", loginId));
+            throw new ApplicationException(ErrorCode.EMPTY_LOGIN_ID, String.format("LoginId[%s] should not be empty", loginId));
         }
 
         if (loginId.length() < 5) {
-            throw new ApplicationException(ErrorCode.INVALID_USER_ID, String.format("LoginId[%s] is too short", loginId));
+            throw new ApplicationException(ErrorCode.INVALID_LOGIN_ID, String.format("LoginId[%s] is too short", loginId));
         }
 
         if (StringUtils.isBlank(userName)) {
@@ -130,11 +130,11 @@ public class UserService {
         }
 
         if (StringUtils.isBlank(password)) {
-            throw new ApplicationException(ErrorCode.EMPTY_PASSWORD, String.format("Password %s should not be empty", password));
+            throw new ApplicationException(ErrorCode.EMPTY_PASSWORD, String.format("Password[%s] should not be empty", password));
         }
 
         if (password.length() < 5) {
-            throw new ApplicationException(ErrorCode.INVALID_PASSWORD, String.format("Password %s is invalid", password));
+            throw new ApplicationException(ErrorCode.INVALID_PASSWORD, String.format("Password[%s] is invalid", password));
         }
 
         Pattern pattern = Pattern.compile("[^a-z0-9 ]", Pattern.CASE_INSENSITIVE);

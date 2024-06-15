@@ -7,11 +7,13 @@ import org.springframework.http.HttpStatus;
 @Getter
 @AllArgsConstructor
 public enum ErrorCode {
+    // 20000 : Ok
     OK(HttpStatus.OK, 200000, "Ok"),
+
     // 40000 ~ 40099 : User
-    DUPLICATED_LOGIN_ID(HttpStatus.CONFLICT, 40000, "User ID is duplicated"),
-    EMPTY_USER_ID(HttpStatus.BAD_REQUEST, 40001, "User ID is empty"),
-    INVALID_USER_ID(HttpStatus.BAD_REQUEST, 40002, "User ID is invalid"),
+    DUPLICATED_LOGIN_ID(HttpStatus.CONFLICT, 40000, "Login ID is duplicated"),
+    EMPTY_LOGIN_ID(HttpStatus.BAD_REQUEST, 40001, "Login ID is empty"),
+    INVALID_LOGIN_ID(HttpStatus.BAD_REQUEST, 40002, "Login ID is invalid"),
     EMPTY_USER_NAME(HttpStatus.BAD_REQUEST, 40003, "UserName is empty"),
     EMPTY_PASSWORD(HttpStatus.BAD_REQUEST, 40004, "Password is empty"),
     INVALID_PASSWORD(HttpStatus.BAD_REQUEST, 40005, "Password is invalid"),

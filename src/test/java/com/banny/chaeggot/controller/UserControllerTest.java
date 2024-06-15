@@ -38,13 +38,13 @@ class UserControllerTest {
     public void join() throws Exception {
         // given
         String loginId = "testUser000";
-        String uesrName = "서반석";
+        String userName = "서반석";
         String password = "testUser!";
 
         // expected
         mockMvc.perform(post("/api/v1/user/join")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsBytes(new UserJoinRequest(loginId, uesrName, password))))
+                        .content(objectMapper.writeValueAsBytes(new UserJoinRequest(loginId, userName, password))))
                 .andExpect(status().isOk())
                 .andDo(print());
     }
@@ -54,14 +54,14 @@ class UserControllerTest {
     public void joinWithoutUserId() throws Exception {
         // given
         String loginId = ""; // Empty loginId
-        String uesrName = "서반석";
+        String userName = "서반석";
         String password = "testUser!";
 
         // expected
         mockMvc.perform(post("/api/v1/user/join")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsBytes(new UserJoinRequest(loginId, uesrName, password))))
-                .andExpect(jsonPath("$.code").value(ErrorCode.EMPTY_USER_ID.getCode()))
+                        .content(objectMapper.writeValueAsBytes(new UserJoinRequest(loginId, userName, password))))
+                .andExpect(jsonPath("$.code").value(ErrorCode.EMPTY_LOGIN_ID.getCode()))
                 .andExpect(status().isBadRequest())
                 .andDo(print());
     }
@@ -71,14 +71,14 @@ class UserControllerTest {
     public void joinWithUserIdWithNotEnoughLength() throws Exception {
         // given
         String loginId = "test"; // 4 letters of loginId
-        String uesrName = "서반석";
+        String userName = "서반석";
         String password = "testUser!";
 
         // expected
         mockMvc.perform(post("/api/v1/user/join")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsBytes(new UserJoinRequest(loginId, uesrName, password))))
-                .andExpect(jsonPath("$.code").value(ErrorCode.INVALID_USER_ID.getCode()))
+                        .content(objectMapper.writeValueAsBytes(new UserJoinRequest(loginId, userName, password))))
+                .andExpect(jsonPath("$.code").value(ErrorCode.INVALID_LOGIN_ID.getCode()))
                 .andExpect(status().isBadRequest())
                 .andDo(print());
     }
@@ -105,13 +105,13 @@ class UserControllerTest {
     public void joinWithoutUserName() throws Exception {
         // given
         String loginId = "testUser000";
-        String uesrName = ""; // Empty uesrName
+        String userName = ""; // Empty userName
         String password = "testUser!";
 
         // expected
         mockMvc.perform(post("/api/v1/user/join")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsBytes(new UserJoinRequest(loginId, uesrName, password))))
+                        .content(objectMapper.writeValueAsBytes(new UserJoinRequest(loginId, userName, password))))
                 .andExpect(jsonPath("$.code").value(ErrorCode.EMPTY_USER_NAME.getCode()))
                 .andExpect(status().isBadRequest())
                 .andDo(print());

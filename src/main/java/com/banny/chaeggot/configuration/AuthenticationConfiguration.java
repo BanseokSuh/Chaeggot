@@ -28,11 +28,12 @@ public class AuthenticationConfiguration {
     /**
      * The below urls are ignored by the filter.
      * The requestMatchers() is used to ignore the specified urls.
+     *
      * @return WebSecurityCustomizer
      */
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().requestMatchers("/api/*/user/join", "/api/*/user/login");
+        return (web) -> web.ignoring().requestMatchers("/api/*/user/join", "/api/*/user/login", "/api/v1");
     }
 
     /**

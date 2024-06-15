@@ -110,7 +110,6 @@ public class UserService {
 
     /**
      * Valid check for user info
-     * todo: Move this method to a separate class
      *
      * @param loginId
      * @param userName
